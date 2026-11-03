@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+<title>CozyFocus - Todo en Uno</title>
+<!-- Google Fonts: Quicksand, Inter & Be Vietnam Pro -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&amp;family=Inter:wght@400;500;600&amp;family=Quicksand:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#8d4c3f",
+            "primary-container": "#f9876f",
+            "primary-fixed": "#ffdad3",
+            "primary-fixed-dim": "#ffb4a5",
+            "surface": "#fff8f2",
+            "background": "#fff8f2",
+            "surface-dim": "#dfd9d3",
+            "surface-container": "#f3ede7",
+            "surface-container-low": "#f9f2ec",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-high": "#eee7e1",
+            "secondary": "#4f644b",
+            "secondary-container": "#cfe6c7",
+            "secondary-fixed": "#ffdadb",
+            "tertiary": "#7d525f",
+            "tertiary-fixed": "#ffd9e2",
+            "outline": "#86736f",
+            "outline-variant": "#d8c2bd",
+            "on-surface": "#1e1b18",
+            "on-surface-variant": "#534340",
+            cozy: {
+              bg: '#FCF9F8',
+              surface: '#FFFDFC',
+              card: '#FFFFFF',
+              coral: '#F9876F',
+              coralDark: '#E07A5F',
+              terracotta: '#9E412E',
+              text: '#4A3B32',
+              muted: '#9C8C83',
+              subtle: '#EBDCD3',
+              border: '#F3E6DE',
+              badge: '#FFF1EC'
+            }
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "2rem",
+            xl: "3rem",
+            full: "9999px"
+          },
+          fontFamily: {
+            quicksand: ['Quicksand', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+            vietnam: ['Be Vietnam Pro', 'sans-serif']
+          },
+          boxShadow: {
+            'cozy': '0 8px 24px -4px rgba(158, 65, 46, 0.08), 0 2px 8px -2px rgba(158, 65, 46, 0.04)',
+            'pill': '0 4px 12px rgba(249, 135, 111, 0.3)',
+            'card': '0 4px 16px -2px rgba(158, 65, 46, 0.06)'
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Quicksand', 'Be Vietnam Pro', sans-serif;
+      background-color: #FCF9F8;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      overscroll-behavior: none;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .cloud-shadow {
+      box-shadow: 0px 16px 36px -8px rgba(107, 79, 71, 0.08), 0px 4px 12px rgba(107, 79, 71, 0.03);
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .cozy-glass {
+      background: rgba(255, 253, 252, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    @keyframes mochiBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      40% { transform: translateY(-6px) scale(1.02); }
+    }
+    .animate-bounce-subtle {
+      animation: mochiBounce 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.97) translateY(2px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .animate-pop {
+      animation: popIn 0.25s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col justify-between items-center pb-24 antialiased">
+<svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+
+<!-- Contenedor Maestro Móvil (390px - 440px) -->
+<div class="w-full max-w-md min-h-screen flex flex-col bg-surface relative">
+<!-- ========================================================= -->
+<!-- 1. PANTALLA INICIO (Home / Enfoque - EXACTO SCREEN_58)   -->
+<!-- ========================================================= -->
+<div class="w-full flex flex-col" id="screen-home" style="display: block;">
+<!-- TopAppBar SCREEN_58 -->
+<header class="sticky top-0 w-full bg-surface/85 backdrop-blur-xl shadow-[0px_20px_40px_-15px_rgba(107,79,71,0.06)] flex justify-between items-center px-5 py-3.5 z-40">
+<div class="flex items-center gap-3">
+<button aria-label="Menú" aria-expanded="false" class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-container text-primary hover:opacity-80 transition-opacity active:scale-95" id="menu-button" type="button">
+<span class="material-symbols-outlined text-[22px]">menu</span>
+</button>
+</div>
+<h1 class="text-xl font-bold text-primary font-quicksand tracking-tight">CozyFocus</h1>
+<div class="flex items-center gap-1.5 bg-[#FFEAE5] px-3.5 py-1.5 rounded-full text-[#F9876F] font-bold text-sm shadow-xs cursor-pointer active:scale-95 transition-transform">
+<span class="">5</span><span class="">🔥</span>
+</div>
+</header>
+<!-- Main Canvas SCREEN_58 -->
+<main class="px-5 pt-3 flex flex-col gap-5">
+<!-- Focus Buddy Hero Card -->
+<section class="bg-white rounded-3xl p-4 cloud-shadow overflow-hidden border border-[#dcc0bb]/40 flex flex-col items-center justify-center relative"><div class="relative w-64 h-64 flex items-center justify-center overflow-hidden rounded-full shadow-sm border border-[#F3E6DE] bg-[#FFF4EE]"><svg aria-label="Mochi con su atuendo actual" class="absolute inset-0 w-full h-full z-10 pointer-events-none overflow-visible" id="home-mochi-display" role="img" viewBox="0 0 240 270"></svg></div></section>
+<!-- Focus Session Timer -->
+<section class="bg-surface-container-lowest rounded-3xl p-6 cloud-shadow flex flex-col items-center text-center gap-3.5 border border-[#dcc0bb]/40">
+<h2 class="text-lg font-bold text-[#1E1E1E]">Focus Session</h2>
+<div class="text-5xl font-extrabold text-[#F9876F] tracking-tight font-quicksand my-1" id="home-timer-display">25:00</div>
+<div class="flex gap-4 items-center">
+<button class="bg-[#F9876F] text-white font-bold text-sm px-9 py-3 rounded-full hover:opacity-90 active:scale-95 transition-all shadow-md shadow-[#F9876F]/30" id="home-timer-start-btn" type="button">
+              Start
+            </button>
+<button aria-label="Reiniciar" class="w-12 h-12 rounded-full bg-[#FCF9F8] border border-[#dcc0bb]/60 text-[#636363] flex items-center justify-center hover:bg-[#FFF8F4] transition-colors active:scale-95" id="home-timer-reset-btn" type="button">
+<span class="material-symbols-outlined text-[20px]">refresh</span>
+</button>
+</div>
+</section>
+<!-- Progress Cards Grid -->
+<section class="grid grid-cols-2 gap-3.5">
+<!-- Study Session -->
+<div class="bg-surface-container-lowest rounded-3xl p-4 flex flex-col gap-2.5 cloud-shadow border border-[#dcc0bb]/30">
+<div class="flex justify-between items-start">
+<div class="w-8 h-8 rounded-full bg-[#FFEAE5] text-[#F9876F] flex items-center justify-center">
+<span class="material-symbols-outlined text-base">menu_book</span>
+</div>
+<span class="text-xs font-bold text-[#1E1E1E]">75%</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-[#1E1E1E]">Study Session</h3>
+<p class="text-xs text-[#636363]">3/4 Hours</p>
+</div>
+<div class="w-full h-2.5 bg-[#FCF9F8] border border-[#dcc0bb]/30 rounded-full overflow-hidden mt-1">
+<div class="h-full bg-[#F9876F] rounded-full" style="width: 75%;"></div>
+</div>
+</div>
+<!-- Daily Reading -->
+<div class="bg-surface-container-lowest rounded-3xl p-4 flex flex-col gap-2.5 cloud-shadow border border-[#dcc0bb]/30">
+<div class="flex justify-between items-start">
+<div class="w-8 h-8 rounded-full bg-[#FCECEE] text-[#E38C92] flex items-center justify-center">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: &quot;FILL&quot; 1;">auto_stories</span>
+</div>
+<span class="text-xs font-bold text-[#1E1E1E]">30%</span>
+</div>
+<div>
+<h3 class="text-sm font-semibold text-[#1E1E1E]">Daily Reading</h3>
+<p class="text-xs text-[#636363]">15/50 Pages</p>
+</div>
+<div class="w-full h-2.5 bg-[#FCF9F8] border border-[#dcc0bb]/30 rounded-full overflow-hidden mt-1">
+<div class="h-full bg-[#E38C92] rounded-full" style="width: 30%;"></div>
+</div>
+</div>
+</section>
+<!-- Bunny's Closet Promo Banner (Lleva a la pantalla de Armario) -->
+<section class="bg-surface-container-lowest rounded-3xl p-4 flex items-center justify-between cloud-shadow border border-[#dcc0bb]/40 cursor-pointer hover:shadow-lg transition-all active:scale-[0.99] group" id="banner-to-closet">
+<div class="flex flex-col gap-1">
+<h3 class="text-base font-bold text-[#1E1E1E]">Bunny's Closet</h3>
+<p class="text-xs text-[#636363] mb-1">Dress up your focus buddy!</p>
+<div class="flex items-center gap-1 text-[#F9876F] text-xs font-bold group-hover:translate-x-0.5 transition-transform">
+<span class="">View Items</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<div class="w-20 h-20 bg-[#FFF8F4] border border-[#dcc0bb]/40 rounded-2xl p-2 grid grid-cols-2 grid-rows-2 gap-1 items-center justify-items-center shadow-inner">
+<span class="text-lg">🧥</span>
+<span class="text-lg">🧢</span>
+<span class="text-lg">👓</span>
+<span class="text-lg">👑</span>
+</div>
+</section>
+<!-- Daily Habits (Compact Home Preview) -->
+<section class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<h2 class="text-base font-bold text-[#1E1E1E]">Daily Habits</h2>
+<div class="bg-[#FCECEE] text-[#E38C92] px-3 py-1 rounded-full text-xs font-bold" id="home-habit-progress">2/5 Done</div>
+</div>
+<div class="flex flex-col gap-2.5">
+<!-- Drink Water -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 flex items-center gap-3.5 cloud-shadow opacity-70 border border-[#dcc0bb]/30">
+<div class="w-8 h-8 rounded-full bg-[#E38C92] text-white flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+<div class="flex-1">
+<h4 class="text-xs font-bold text-[#636363] line-through">Drink Water</h4>
+<p class="text-[11px] text-[#636363]/70">8/8 Glasses</p>
+</div>
+</div>
+<!-- Stretching -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 flex items-center gap-3.5 cloud-shadow border border-[#dcc0bb]/30">
+<div class="w-8 h-8 rounded-full border-2 border-[#dcc0bb] flex items-center justify-center shrink-0"></div>
+<div class="flex-1">
+<h4 class="text-xs font-bold text-[#1E1E1E]">Stretching</h4>
+<p class="text-[11px] text-[#636363]">15 mins</p>
+</div>
+<div class="w-9 h-9 rounded-full bg-[#FFEAE5] text-[#F9876F] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-base">accessibility_new</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== ESTADÍSTICAS DE ESTUDIO COMPLETAS (SCREEN_58) ==================== -->
+<section class="flex flex-col gap-4 mt-2 mb-6">
+<!-- Header & Period Filter -->
+<div class="flex flex-col gap-2.5">
+<div class="flex justify-between items-center">
+<h2 class="text-base font-bold text-[#1E1E1E] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#F9876F] text-lg">query_stats</span> Estadísticas de Estudio
+              </h2>
+<span class="text-xs font-semibold text-[#86736f] bg-surface-container px-2.5 py-1 rounded-full" id="stats-period-label">Periodo: 3 semanas</span>
+</div>
+<!-- Period Filter Pills -->
+<div class="flex justify-between items-center bg-surface-container-high/60 p-1 rounded-full text-xs text-[#86736f]">
+<button aria-pressed="false" class="px-3 py-1.5 rounded-full hover:text-[#1E1E1E] transition-colors" data-period="1 semana" type="button">1 sem</button>
+<button aria-pressed="true" class="px-4 py-1.5 rounded-full bg-[#F9876F] text-white font-bold shadow-sm" data-period="3 semanas" type="button">3 sem</button>
+<button aria-pressed="false" class="px-3 py-1.5 rounded-full hover:text-[#1E1E1E] transition-colors" data-period="6 meses" type="button">6 meses</button>
+<button aria-pressed="false" class="px-3 py-1.5 rounded-full hover:text-[#1E1E1E] transition-colors" data-period="1 año" type="button">1 año</button>
+</div>
+</div>
+<!-- Weekdays Calendar Strip -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 cloud-shadow border border-[#dcc0bb]/40 flex justify-between items-center text-center">
+<div class="flex flex-col items-center gap-0.5 text-[#86736f]">
+<span class="text-[10px] font-semibold">LUN</span>
+<span class="text-xs font-bold text-[#1E1E1E]">8</span>
+</div>
+<div class="flex flex-col items-center gap-0.5">
+<span class="text-[10px] font-bold text-[#F9876F]">MAR</span>
+<span class="w-7 h-7 rounded-full bg-[#F9876F] text-white flex items-center justify-center font-bold text-xs shadow-sm">9</span>
+</div>
+<div class="flex flex-col items-center gap-0.5 text-[#86736f]">
+<span class="text-[10px] font-semibold">MIÉ</span>
+<span class="text-xs font-bold text-[#1E1E1E]">10</span>
+</div>
+<div class="flex flex-col items-center gap-0.5 text-[#86736f]">
+<span class="text-[10px] font-semibold">JUE</span>
+<span class="text-xs font-bold text-[#1E1E1E]">11</span>
+</div>
+<div class="flex flex-col items-center gap-0.5 text-[#86736f]">
+<span class="text-[10px] font-semibold">VIE</span>
+<span class="text-xs font-bold text-[#1E1E1E]">12</span>
+</div>
+<div class="flex flex-col items-center gap-0.5 text-[#86736f]">
+<span class="text-[10px] font-semibold">SÁB</span>
+<span class="text-xs font-bold text-[#1E1E1E]">13</span>
+</div>
+<div class="flex flex-col items-center gap-0.5 text-[#86736f]">
+<span class="text-[10px] font-semibold">DOM</span>
+<span class="text-xs font-bold text-[#1E1E1E]">14</span>
+</div>
+</div>
+<!-- Compact Activity Pair Cards (Pomodoro y Lectura) -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Pomodoro Card -->
+<div class="bg-[#5f68b8] text-white rounded-3xl p-4 flex flex-col justify-between cloud-shadow relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">timer</span>
+<span class="font-bold text-xs">Pomodoro</span>
+</div>
+<div class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold">95 ses.</div>
+</div>
+<div class="mt-1">
+<div class="text-[10px] text-white/80 font-medium">Duración</div>
+<div class="text-lg font-extrabold tracking-tight">1:25:22</div>
+</div>
+<div class="mt-2 text-[11px] text-white/90 font-medium flex items-center justify-between border-t border-white/20 pt-1.5">
+<span class="">Zanahorias</span>
+<span class="font-bold">575 🥕</span>
+</div>
+</div>
+<!-- Lectura Profunda Card -->
+<div class="bg-[#E38C92] text-white rounded-3xl p-4 flex flex-col justify-between cloud-shadow relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+<span class="font-bold text-xs">Lectura</span>
+</div>
+<div class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold">Racha 12d</div>
+</div>
+<div class="mt-1">
+<div class="text-[10px] text-white/80 font-medium">Duración</div>
+<div class="text-lg font-extrabold tracking-tight">0:53:48</div>
+</div>
+<div class="mt-2 text-[11px] text-white/90 font-medium flex items-center justify-between border-t border-white/20 pt-1.5">
+<span class="">Páginas</span>
+<span class="font-bold">120 págs</span>
+</div>
+</div>
+</div>
+<!-- Card 1: Horas Enfocadas - TIEMPO TOTAL 127h 45m -->
+<div class="bg-[#ec5b68] text-white rounded-3xl p-5 cloud-shadow flex flex-col gap-2 relative overflow-hidden">
+<div class="text-[10px] uppercase tracking-wider text-white/80 font-bold">Tiempo Total</div>
+<div class="text-2xl font-black leading-tight tracking-tight">127h 45m</div>
+<!-- SVG Wave Graph with Tooltip Indicator -->
+<div class="relative w-full h-24 mt-2">
+<div class="absolute right-12 top-0 bg-white text-[#ec5b68] font-bold text-[10px] px-2 py-0.5 rounded-full shadow-md flex items-center gap-1">
+<span class="">32h 10m</span>
+<span class="w-1.5 h-1.5 bg-[#ec5b68] rounded-full"></span>
+</div>
+<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 300 80">
+<defs>
+<linearGradient id="coralGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"></stop>
+</linearGradient>
+</defs>
+<path d="M 0 65 Q 40 40 70 55 T 140 35 T 210 18 T 260 48 T 300 38 L 300 80 L 0 80 Z" fill="url(#coralGrad)"></path>
+<path d="M 0 65 Q 40 40 70 55 T 140 35 T 210 18 T 260 48 T 300 38" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="3"></path>
+<circle cx="210" cy="18" fill="#ffffff" r="4" stroke="#ec5b68" stroke-width="2"></circle>
+</svg>
+</div>
+</div>
+<!-- Card 2: TASA DE ENFOQUE 91.8% -->
+<div class="bg-[#f48a27] text-white rounded-3xl p-5 cloud-shadow flex flex-col gap-2 relative overflow-hidden">
+<div class="text-[10px] uppercase tracking-wider text-white/80 font-bold">Tasa de Enfoque</div>
+<div class="text-2xl font-black leading-tight tracking-tight">91.8%</div>
+<!-- Zigzag Sparkline SVG -->
+<div class="w-full h-16 mt-2">
+<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 300 50">
+<path d="M 10 38 L 50 18 L 85 32 L 130 15 L 175 35 L 220 20 L 260 30 L 290 8" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<circle cx="10" cy="38" fill="#ffffff" r="3"></circle>
+<circle cx="50" cy="18" fill="#ffffff" r="3"></circle>
+<circle cx="85" cy="32" fill="#ffffff" r="3"></circle>
+<circle cx="130" cy="15" fill="#ffffff" r="3"></circle>
+<circle cx="175" cy="35" fill="#ffffff" r="3"></circle>
+<circle cx="220" cy="20" fill="#ffffff" r="3"></circle>
+<circle cx="260" cy="30" fill="#ffffff" r="3"></circle>
+<circle cx="290" cy="8" fill="#ffffff" r="3"></circle>
+</svg>
+</div>
+</div>
+<!-- Card 3: PROMEDIO DIARIO 05:34 hrs -->
+<div class="bg-[#5057a6] text-white rounded-3xl p-5 cloud-shadow flex flex-col gap-2.5 relative overflow-hidden">
+<div class="text-[10px] uppercase tracking-wider text-white/80 font-bold">Promedio Diario</div>
+<div class="text-2xl font-black leading-tight tracking-tight">05:34 <span class="text-xs font-normal text-white/80">hrs</span></div>
+<!-- Rounded Vertical Bar Graph -->
+<div class="flex items-end justify-between h-20 pt-2 px-1 gap-2">
+<div class="flex-1 bg-white/30 rounded-full h-[55%]"></div>
+<div class="flex-1 bg-white/30 rounded-full h-[80%]"></div>
+<div class="flex-1 bg-white/30 rounded-full h-[40%]"></div>
+<div class="flex-1 bg-white/30 rounded-full h-[90%]"></div>
+<div class="flex-1 bg-white/30 rounded-full h-[65%]"></div>
+<div class="flex-1 bg-white/30 rounded-full h-[100%]"></div>
+<div class="flex-1 bg-white rounded-full h-[85%] shadow-sm"></div>
+<div class="flex-1 bg-white/30 rounded-full h-[45%]"></div>
+<div class="flex-1 bg-white/30 rounded-full h-[70%]"></div>
+</div>
+</div>
+<!-- Card 4: Rendimiento Comparativo (Foco vs Meta) -->
+<div class="bg-surface-container-lowest rounded-3xl p-5 cloud-shadow border border-[#dcc0bb]/40 flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<div>
+<h3 class="text-sm font-bold text-[#1E1E1E]">Rendimiento Comparativo</h3>
+<p class="text-[11px] text-[#86736f]">Tiempo enfocado vs. Metas diarias</p>
+</div>
+<div class="flex items-center gap-2.5 text-[11px]">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[#f44760]"></span>
+<span class="text-[#636363] font-semibold">Foco</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[#3c5df5]"></span>
+<span class="text-[#636363] font-semibold">Meta</span>
+</div>
+</div>
+</div>
+<!-- Dual Line Chart -->
+<div class="relative w-full h-36 mt-1 pt-4">
+<!-- Floating Tooltip -->
+<div class="absolute left-[62%] top-0 bg-[#1e2340] text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-md flex items-center justify-center">
+                1:25:22
+              </div>
+<!-- Vertical Dashed Line -->
+<div class="absolute left-[70%] top-6 bottom-4 border-l border-dashed border-[#dcc0bb]"></div>
+<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 320 90">
+<!-- Red Curve (Focus) -->
+<path d="M 0 55 Q 35 30 75 60 T 150 68 T 225 72 T 265 80 T 320 72" fill="none" stroke="#f44760" stroke-linecap="round" stroke-width="3"></path>
+<!-- Blue Curve (Target) -->
+<path d="M 0 78 Q 45 80 80 62 T 150 65 T 225 15 T 270 45 T 320 50" fill="none" stroke="#3c5df5" stroke-linecap="round" stroke-width="3"></path>
+<!-- Indicator Point -->
+<circle cx="225" cy="15" fill="#ffffff" r="4" stroke="#3c5df5" stroke-width="2.5"></circle>
+</svg>
+</div>
+<!-- Month Day Axis Labels (F07 - F13) -->
+<div class="flex justify-between items-center text-[10px] font-semibold text-[#86736f] pt-2 border-t border-[#dcc0bb]/20">
+<span class="">F07</span>
+<span class="">F08</span>
+<span class="">F09</span>
+<span class="">F10</span>
+<span class="text-[#F9876F] font-bold">F11</span>
+<span class="">F12</span>
+<span class="">F13</span>
+</div>
+</div>
+</section>
+</main>
+</div>
+<div class="hidden w-full flex flex-col" id="screen-settings" style="display: none;">
+  <header class="sticky top-0 z-40 flex items-center justify-between bg-surface/85 px-5 py-4 shadow-sm backdrop-blur-xl">
+    <h1 class="text-xl font-bold text-primary">Configuración</h1>
+    <span class="material-symbols-outlined text-primary" aria-hidden="true">settings</span>
+  </header>
+  <main class="flex flex-1 flex-col gap-4 px-5 pt-4">
+    <section class="rounded-3xl border border-[#dcc0bb]/40 bg-white p-5 shadow-sm">
+      <label class="flex flex-col gap-2 text-sm font-bold text-on-surface" for="focus-duration-select">
+        Duración de la sesión de enfoque
+        <select class="rounded-xl border border-[#dcc0bb] bg-surface px-3 py-2 font-medium" id="focus-duration-select">
+          <option value="15">15 minutos</option>
+          <option value="25" selected>25 minutos</option>
+          <option value="45">45 minutos</option>
+          <option value="60">60 minutos</option>
+        </select>
+      </label>
+      <p class="mt-3 text-xs text-on-surface-variant">El cambio reinicia el temporizador si no hay una sesión en curso.</p>
+    </section>
+  </main>
+</div>
+<!-- ========================================================= -->
+<!-- 2. PANTALLA ARMARIO (Items / Vestidor - EXACTO SCREEN_16) -->
+<!-- ========================================================= -->
+<div class="w-full flex flex-col hidden" id="screen-armario" style="display: none;">
+<!-- TopBar SCREEN_16 -->
+<header class="sticky top-0 w-full px-5 pt-4 pb-2.5 flex items-center justify-between cozy-glass z-40 border-b border-[#F3E6DE]/60">
+<div class="flex items-center gap-2.5">
+<div aria-hidden="true" class="w-10 h-10 rounded-full bg-cozy-badge flex items-center justify-center border border-cozy-subtle shadow-sm">
+<svg class="w-5 h-5 text-cozy-coral" fill="currentColor" viewBox="0 0 24 24">
+<path d="M12 2C12 6 8 8 8 12C8 16 12 18 12 22C12 18 16 16 16 12C16 8 12 6 12 2Z" opacity="0.3"></path>
+<path d="M2 12C6 12 8 8 12 8C16 8 18 12 22 12C18 12 16 16 16 12C16 8 12 6 12 2Z" fill="currentColor"></path>
+</svg>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-bold tracking-tight text-cozy-terracotta leading-tight">CozyFocus</span>
+<span class="text-xs font-semibold text-cozy-muted leading-none">Armario de Mochi</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 bg-cozy-surface px-3 py-1.5 rounded-full border border-cozy-border shadow-sm">
+<span class="text-sm">🔥</span>
+<span class="text-xs font-bold text-cozy-terracotta">5</span>
+</div>
+<button aria-label="Perfil" class="w-9 h-9 rounded-full bg-cozy-terracotta text-white flex items-center justify-center shadow-sm active:scale-95 transition" id="profile-button" type="button">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></path>
+</svg>
+</button>
+</div>
+</header>
+<main class="flex-1 px-4 pt-3 flex flex-col gap-3.5 pb-6">
+<!-- Tarjeta Principal del Personaje (Vestidor) -->
+<section class="w-full bg-white rounded-3xl p-4 shadow-card border border-cozy-border/60 flex flex-col gap-3 relative overflow-hidden">
+<div class="flex items-center justify-between w-full z-10">
+<div class="flex items-center gap-1.5 bg-cozy-badge px-3 py-1 rounded-full text-cozy-terracotta border border-cozy-coral/20">
+<span class="text-xs">⭐</span>
+<span class="text-xs font-bold tracking-tight">Nivel 4 Estudiante</span>
+</div>
+</div>
+<!-- Avatar Mochi Erguido Anatómico Interactivo -->
+<div class="relative w-full flex items-center justify-center py-2">
+<div class="relative w-64 h-72 flex items-center justify-center transition-transform duration-200" id="mochi-stage">
+<div class="absolute inset-3 rounded-full bg-gradient-to-b from-[#FFF4EE] to-[#FFE7DC] opacity-85 pointer-events-none"></div>
+<div class="absolute bottom-2 w-36 h-5 rounded-[100%] bg-cozy-coral/10 blur-[3px] pointer-events-none"></div>
+<svg class="w-full h-full relative z-10 select-none overflow-visible" viewBox="0 0 240 270" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<filter height="116%" id="soft-shadow" width="116%" x="-8%" y="-8%">
+<feDropShadow dx="0" dy="4" flood-color="#9E412E" flood-opacity="0.08" stdDeviation="4"></feDropShadow>
+</filter>
+<linearGradient id="ear-grad-left" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#FFD9DC"></stop>
+<stop offset="100%" stop-color="#FFAEBA"></stop>
+</linearGradient>
+<linearGradient id="ear-grad-right" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#FFD9DC"></stop>
+<stop offset="100%" stop-color="#FFAEBA"></stop>
+</linearGradient>
+</defs>
+<g filter="url(#soft-shadow)" id="mochi-character">
+<!-- Colita pompón -->
+<g id="mochi-tail">
+<circle cx="170" cy="188" fill="#FFFFFF" r="14" stroke="#523932" stroke-width="2.2"></circle>
+<path d="M174 182 C178 185 180 190 178 194" fill="none" stroke="#EAD5CB" stroke-linecap="round" stroke-width="2"></path>
+</g>
+<!-- Patita Izquierda -->
+<g id="mochi-foot-left">
+<path d="M84 212 C84 207 92 205 102 205 C113 205 119 210 118 217 C117 222 110 226 97 226 C86 226 84 220 84 212 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.2"></path>
+<line stroke="#523932" stroke-linecap="round" stroke-width="1.8" x1="93" x2="93" y1="218" y2="224"></line>
+<line stroke="#523932" stroke-linecap="round" stroke-width="1.8" x1="102" x2="102" y1="218" y2="224"></line>
+</g>
+<!-- Patita Derecha -->
+<g id="mochi-foot-right">
+<path d="M122 217 C121 210 127 205 138 205 C148 205 156 207 156 212 C156 220 154 226 143 226 C130 226 123 222 122 217 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.2"></path>
+<line stroke="#523932" stroke-linecap="round" stroke-width="1.8" x1="138" x2="138" y1="218" y2="224"></line>
+<line stroke="#523932" stroke-linecap="round" stroke-width="1.8" x1="147" x2="147" y1="218" y2="224"></line>
+</g>
+<!-- Piernas y cadera -->
+<path d="M82 170 C72 188 74 214 88 217 C100 220 140 220 152 217 C166 214 168 188 158 170 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.2"></path>
+<!-- Torso Base Desnudo -->
+<g id="mochi-bare-body" style="display: none;">
+<path d="M78 126 C66 148 64 186 78 206 C88 215 152 215 162 206 C176 186 174 148 162 126 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.2"></path>
+<ellipse cx="120" cy="168" fill="#FFF5F2" rx="28" ry="26"></ellipse>
+<!-- Brazo izquierdo -->
+<path d="M76 128 C64 140 60 162 67 174 C71 179 79 178 84 172 C89 164 88 144 87 132 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.2"></path>
+<circle cx="70" cy="170" fill="#FFFDFD" r="7" stroke="#523932" stroke-width="2"></circle>
+<!-- Brazo derecho -->
+<path d="M164 128 C176 140 180 162 173 174 C169 179 161 178 156 172 C151 164 152 144 153 132 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.2"></path>
+<circle cx="170" cy="170" fill="#FFFDFD" r="7" stroke="#523932" stroke-width="2"></circle>
+</g>
+<!-- Capa Dinámica de Prenda -->
+<g id="dynamic-clothing-layer">
+            <g class="animate-pop" id="garment-striped">
+              <path d="M82 142 C64 148 56 164 62 172 C65 176 72 176 76 169 C82 160 84 148 86 142 Z" fill="#D97757" stroke="#523932" stroke-width="2.2" stroke-linejoin="round"></path>
+              <path d="M60 156 C65 159 76 156 82 150" stroke="#FFF5EB" stroke-width="3.8" stroke-linecap="round" fill="none"></path>
+              <path d="M60 165 C64 167 72 165 76 161" stroke="#FFF5EB" stroke-width="3" stroke-linecap="round" fill="none"></path>
+              <path d="M59 168 C63 173 73 171 76 165" fill="#C85A32" stroke="#523932" stroke-width="2"></path>
+
+              <path d="M158 142 C176 148 184 164 178 172 C175 176 168 176 164 169 C158 160 156 148 154 142 Z" fill="#D97757" stroke="#523932" stroke-width="2.2" stroke-linejoin="round"></path>
+              <path d="M180 156 C175 159 164 156 158 150" stroke="#FFF5EB" stroke-width="3.8" stroke-linecap="round" fill="none"></path>
+              <path d="M180 165 C176 167 168 165 164 161" stroke="#FFF5EB" stroke-width="3" stroke-linecap="round" fill="none"></path>
+              <path d="M181 168 C177 173 167 171 164 165" fill="#C85A32" stroke="#523932" stroke-width="2"></path>
+
+              <path d="M78 142 C68 160 66 188 75 204 C84 212 156 212 165 204 C174 188 172 160 162 142 Z" fill="#D97757" stroke="#523932" stroke-width="2.3"></path>
+              <path d="M74 160 C90 170 150 170 166 160" fill="none" stroke="#FFF5EB" stroke-width="7.5" stroke-linecap="round"></path>
+              <path d="M73 178 C90 190 150 190 167 178" fill="none" stroke="#FFF5EB" stroke-width="7.5" stroke-linecap="round"></path>
+
+              <path d="M75 198 C88 206 152 206 165 198 L163 207 C150 215 90 215 77 207 Z" fill="#C85A32" stroke="#523932" stroke-width="2"></path>
+            </g>
+          </g>
+<!-- Manitas por encima -->
+<g id="dynamic-hands-layer" style="display: block;">
+<ellipse cx="69" cy="168" fill="#FFFDFD" rx="7.5" ry="6.5" stroke="#523932" stroke-width="2"></ellipse>
+<line stroke="#523932" stroke-linecap="round" stroke-width="1.5" x1="68" x2="68" y1="171" y2="174"></line>
+<ellipse cx="171" cy="168" fill="#FFFDFD" rx="7.5" ry="6.5" stroke="#523932" stroke-width="2"></ellipse>
+<line stroke="#523932" stroke-linecap="round" stroke-width="1.5" x1="172" x2="172" y1="171" y2="174"></line>
+</g>
+<!-- Oreja Izquierda -->
+<g id="ear-left">
+<path d="M96 90 C84 52 88 14 104 18 C118 22 116 58 111 88 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.4"></path>
+<path d="M98 80 C88 52 92 24 103 26 C112 28 111 56 107 78 Z" fill="url(#ear-grad-left)"></path>
+</g>
+<!-- Oreja Derecha -->
+<g id="ear-right">
+<path d="M129 88 C138 56 150 18 166 26 C178 34 163 70 146 91 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.4"></path>
+<path d="M133 80 C141 54 150 32 161 38 C170 44 157 69 143 83 Z" fill="url(#ear-grad-right)"></path>
+</g>
+<!-- Cabeza Mochi Despejada -->
+<path d="M80 88 C68 96 64 116 70 128 C78 142 98 144 120 144 C142 144 162 142 170 128 C176 116 172 96 160 88 C153 77 141 72 120 72 C99 72 87 77 80 88 Z" fill="#FFFDFD" stroke="#523932" stroke-width="2.4"></path>
+<!-- Mechoncito -->
+<path d="M116 72 C118 67 122 67 124 72 M122 71 C125 67 128 68 128 73" fill="none" stroke="#523932" stroke-linecap="round" stroke-width="2"></path>
+<!-- Mejillas -->
+<ellipse cx="85" cy="120" fill="#FFB7B2" opacity="0.85" rx="9" ry="5.5"></ellipse>
+<ellipse cx="155" cy="120" fill="#FFB7B2" opacity="0.85" rx="9" ry="5.5"></ellipse>
+<!-- Ojos Kawaii -->
+<g id="eyes">
+<ellipse cx="98" cy="112" fill="#382622" rx="5.5" ry="7"></ellipse>
+<circle cx="96.5" cy="109.5" fill="#FFFFFF" r="2.3"></circle>
+<circle cx="100.5" cy="114" fill="#FFFFFF" r="1.1"></circle>
+<ellipse cx="142" cy="112" fill="#382622" rx="5.5" ry="7"></ellipse>
+<circle cx="140.5" cy="109.5" fill="#FFFFFF" r="2.3"></circle>
+<circle cx="144.5" cy="114" fill="#FFFFFF" r="1.1"></circle>
+</g>
+<!-- Nariz y boquita -->
+<path d="M120 114 L118.5 116.5 C119.5 117.5 120.5 117.5 121.5 116.5 Z" fill="#F89898"></path>
+<path d="M115 120 C117 122.5 119.5 122.5 120 120 C120.5 122.5 123 122.5 125 120" fill="none" stroke="#4A342F" stroke-linecap="round" stroke-width="1.9"></path>
+<!-- Capa de Cuello Superior -->
+<g id="dynamic-collar-top-layer"></g>
+<!-- Capa de Sombreros / Lentes -->
+<g id="dynamic-accessory-layer"></g>
+</g>
+</svg>
+</div>
+</div>
+<!-- Info Mochi -->
+<div class="flex items-center justify-center gap-2">
+<h2 class="text-lg font-bold text-cozy-text tracking-tight">Mochi</h2>
+<span class="px-3 py-0.5 rounded-full text-xs font-bold bg-cozy-badge text-cozy-terracotta border border-cozy-coral/20" id="current-garment-tag" data-sync="active">Rayas Terracota</span>
+</div>
+<!-- Cita Flotante de Mochi -->
+<div class="w-full bg-cozy-bg rounded-2xl p-3 flex items-start gap-2.5 border border-cozy-border">
+<span class="text-base select-none">💬</span>
+<p class="text-xs text-cozy-text/90 italic leading-relaxed" id="mochi-quote">¡Me queda perfecto! Listo para estudiar y dar lo mejor.</p>
+</div>
+<!-- Barra de Zanahorias -->
+<div class="w-full bg-[#FFF4EE] border border-cozy-coral/20 rounded-2xl px-3.5 py-2 flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="text-base">🥕</span>
+<span class="text-xs font-bold text-cozy-terracotta">450 Zanahorias</span>
+</div>
+<button class="text-xs font-bold text-cozy-coralDark flex items-center gap-0.5 hover:underline cursor-pointer" id="redeem-hours-button" type="button">
+              Canjear horas <span class="text-sm">›</span>
+</button>
+</div>
+</section>
+<!-- Selector de Categorías -->
+<section class="w-full flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5" data-purpose="category-tabs">
+<button class="cat-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cozy-coralDark text-white shadow-pill text-xs font-bold active:scale-95 transition-all whitespace-nowrap cursor-pointer" data-cat="all" type="button">
+<span class="">✨</span><span class="">Todos</span>
+</button>
+<button class="cat-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-cozy-text/80 border border-cozy-border text-xs font-semibold hover:border-cozy-coral/40 active:scale-95 transition-all whitespace-nowrap cursor-pointer" data-cat="vestidos" type="button">
+<span class="">👗</span><span class="">Vestidos</span>
+</button>
+<button class="cat-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-cozy-text/80 border border-cozy-border text-xs font-semibold hover:border-cozy-coral/40 active:scale-95 transition-all whitespace-nowrap cursor-pointer" data-cat="clothes" type="button">
+<span class="">👔</span><span class="">Ropa</span>
+</button>
+<button class="cat-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-cozy-text/80 border border-cozy-border text-xs font-semibold hover:border-cozy-coral/40 active:scale-95 transition-all whitespace-nowrap cursor-pointer" data-cat="hats" type="button">
+<span class="">🎩</span><span class="">Sombreros</span>
+</button>
+<button class="cat-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-cozy-text/80 border border-cozy-border text-xs font-semibold hover:border-cozy-coral/40 active:scale-95 transition-all whitespace-nowrap cursor-pointer" data-cat="glasses" type="button">
+<span class="">👓</span><span class="">Lentes</span>
+</button>
+</section>
+<!-- Grid de Ropitas (8 Prendas de SCREEN_16) -->
+<section class="w-full grid grid-cols-4 gap-2" id="garments-grid">
+<!-- 1. Rayas -->
+<button class="garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border-2 border-cozy-coralDark bg-cozy-badge/30 shadow-card active:scale-95 transition-all h-28 relative cursor-pointer" data-cat="clothes" data-item="striped-sweater" type="button">
+<div class="w-11 h-11 flex items-center justify-center">
+<svg class="w-10 h-10" viewBox="0 0 60 60">
+<path d="M16 18 L25 15 Q30 17 35 15 L44 18 L52 27 L46 32 L41 27 L41 49 L19 49 L19 27 L14 32 L8 27 Z" fill="#D06A58"></path>
+<path d="M19 26 L41 26 M19 33 L41 33 M19 40 L41 40" stroke="#FFF4EE" stroke-linecap="round" stroke-width="2.5"></path>
+<ellipse cx="30" cy="16" fill="#9E412E" rx="7" ry="2.5"></ellipse>
+</svg>
+</div>
+<span class="text-[11px] font-bold text-cozy-text text-center truncate w-full">Rayas</span>
+<span class="status-chip w-full py-0.5 rounded-full text-[10px] font-bold text-center leading-tight bg-cozy-coralDark text-white">Puesto</span>
+</button>
+<!-- 2. V. Floral -->
+<button class="garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border border-cozy-border hover:border-cozy-coral/40 shadow-sm active:scale-95 transition-all h-28 relative cursor-pointer" data-cat="vestidos" data-item="floral-dress" type="button">
+<div class="w-11 h-11 flex items-center justify-center">
+<svg class="w-10 h-10" viewBox="0 0 60 60">
+<path d="M22 17 C25 18 35 18 38 17 L44 26 L39 29 L38 27 L47 49 L13 49 L22 27 L21 29 L16 26 Z" fill="#D8B4E2"></path>
+<path d="M22 27 Q30 30 38 27" fill="none" stroke="#C39BD3" stroke-width="1.8"></path>
+<circle cx="23" cy="38" fill="#F9876F" r="2.2"></circle>
+<circle cx="23" cy="38" fill="#FFFDFC" r="0.9"></circle>
+<circle cx="37" cy="40" fill="#F9876F" r="2.2"></circle>
+<circle cx="37" cy="40" fill="#FFFDFC" r="0.9"></circle>
+<circle cx="30" cy="44" fill="#F9876F" r="2.2"></circle>
+<circle cx="30" cy="44" fill="#FFFDFC" r="0.9"></circle>
+</svg>
+</div>
+<span class="text-[11px] font-bold text-cozy-text text-center truncate w-full">V. Floral</span>
+<span class="status-chip w-full py-0.5 rounded-full bg-cozy-bg text-cozy-muted text-[10px] font-bold text-center leading-tight border border-cozy-border">Probar</span>
+</button>
+<!-- 3. Peto Jardín -->
+<button class="garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border border-cozy-border hover:border-cozy-coral/40 shadow-sm active:scale-95 transition-all h-28 relative cursor-pointer" data-cat="vestidos" data-item="garden-overalls" type="button">
+<div class="w-11 h-11 flex items-center justify-center">
+<svg class="w-10 h-10" viewBox="0 0 60 60">
+<path d="M19 19 L41 19 L46 26 L39 28 L37 25 L37 48 L23 48 L23 25 L21 28 L14 26 Z" fill="#FFF2CC"></path>
+<path d="M24 22 L26 22 L26 28 L34 28 L34 22 L36 22 L36 28 L40 30 L40 48 L20 48 L20 30 L24 28 Z" fill="#D97757"></path>
+<circle cx="25" cy="26" fill="#F9EBEA" r="1.2"></circle>
+<circle cx="35" cy="26" fill="#F9EBEA" r="1.2"></circle>
+<rect fill="#C0392B" height="9" rx="2" width="12" x="24" y="32"></rect>
+</svg>
+</div>
+<span class="text-[11px] font-bold text-cozy-text text-center truncate w-full">Peto Jardín</span>
+<span class="status-chip w-full py-0.5 rounded-full bg-cozy-bg text-cozy-muted text-[10px] font-bold text-center leading-tight border border-cozy-border">Probar</span>
+</button>
+<!-- 4. V. Musgo -->
+<button class="garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border border-cozy-border hover:border-cozy-coral/40 shadow-sm active:scale-95 transition-all h-28 relative cursor-pointer" data-cat="clothes" data-item="green-sweater" type="button">
+<div class="w-11 h-11 flex items-center justify-center">
+<svg class="w-10 h-10" viewBox="0 0 60 60">
+<path d="M16 18 L25 15 Q30 17 35 15 L44 18 L52 27 L46 32 L41 27 L41 49 L19 49 L19 27 L14 32 L8 27 Z" fill="#4F7A5E"></path>
+<ellipse cx="30" cy="16" fill="#3B5F48" rx="7" ry="2.5"></ellipse>
+</svg>
+</div>
+<span class="text-[11px] font-bold text-cozy-text text-center truncate w-full">V. Musgo</span>
+<span class="status-chip w-full py-0.5 rounded-full bg-cozy-bg text-cozy-muted text-[10px] font-bold text-center leading-tight border border-cozy-border">Probar</span>
+</button>
+<!-- 5. Azul Índigo -->
+<button class="garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border border-cozy-border hover:border-cozy-coral/40 shadow-sm active:scale-95 transition-all h-28 relative cursor-pointer" data-cat="clothes" data-item="indigo-tee" type="button">
+<div class="w-11 h-11 flex items-center justify-center">
+<svg class="w-10 h-10" viewBox="0 0 60 60">
+<path d="M16 18 L25 15 Q30 17 35 15 L44 18 L52 27 L46 32 L41 27 L41 49 L19 49 L19 27 L14 32 L8 27 Z" fill="#47648B"></path>
+<circle cx="30" cy="27" fill="#E8F1F7" r="2.2"></circle>
+<ellipse cx="30" cy="16" fill="#314B68" rx="7" ry="2.5"></ellipse>
+</svg>
+</div>
+<span class="text-[11px] font-bold text-cozy-text text-center truncate w-full">Azul Índigo</span>
+<span class="status-chip w-full py-0.5 rounded-full bg-cozy-bg text-cozy-muted text-[10px] font-bold text-center leading-tight border border-cozy-border">Probar</span>
+</button>
+<!-- 6. Blusa Lino -->
+<button class="garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border border-cozy-border hover:border-cozy-coral/40 shadow-sm active:scale-95 transition-all h-28 relative cursor-pointer" data-cat="clothes" data-item="cream-blouse" type="button">
+<div class="w-11 h-11 flex items-center justify-center">
+<svg class="w-10 h-10" viewBox="0 0 60 60">
+<path d="M16 18 L25 15 Q30 17 35 15 L44 18 L51 26 L46 31 L41 27 L41 49 L19 49 L19 27 L14 31 L9 26 Z" fill="#F7EDE2"></path>
+<circle cx="30" cy="24" fill="#9E412E" r="2"></circle>
+<circle cx="30" cy="34" fill="#9E412E" r="1.6"></circle>
+</svg>
+</div>
+<span class="text-[11px] font-bold text-cozy-text text-center truncate w-full">Blusa Lino</span>
+<span class="status-chip w-full py-0.5 rounded-full bg-cozy-bg text-cozy-muted text-[10px] font-bold text-center leading-tight border border-cozy-border">Probar</span>
+</button>
+<!-- 7. Boina -->
+<button class="garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border border-cozy-border hover:border-cozy-coral/40 shadow-sm active:scale-95 transition-all h-28 relative cursor-pointer" data-cat="hats" data-item="artist-beret" type="button">
+<div class="w-11 h-11 flex items-center justify-center">
+<svg class="w-10 h-10" viewBox="0 0 60 60">
+<ellipse cx="30" cy="28" fill="#9E412E" rx="19" ry="8"></ellipse>
+<path d="M18 28 C18 20 42 20 42 28 Z" fill="#C85A32"></path>
+<circle cx="30" cy="20" fill="#702010" r="2.5"></circle>
+</svg>
+</div>
+<span class="text-[11px] font-bold text-cozy-text text-center truncate w-full">Boina</span>
+<span class="status-chip w-full py-0.5 rounded-full bg-cozy-bg text-cozy-muted text-[10px] font-bold text-center leading-tight border border-cozy-border">Probar</span>
+</button>
+<!-- 8. Lentes -->
+<button class="garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border border-cozy-border hover:border-cozy-coral/40 shadow-sm active:scale-95 transition-all h-28 relative cursor-pointer" data-cat="glasses" data-item="study-glasses" type="button">
+<div class="w-11 h-11 flex items-center justify-center">
+<svg class="w-10 h-10" viewBox="0 0 60 60">
+<circle cx="21" cy="30" fill="rgba(240, 245, 255, 0.6)" r="8" stroke="#D4AC0D" stroke-width="2.2"></circle>
+<circle cx="39" cy="30" fill="rgba(240, 245, 255, 0.6)" r="8" stroke="#D4AC0D" stroke-width="2.2"></circle>
+<path d="M29 30 C30 28 30 28 31 30" fill="none" stroke="#D4AC0D" stroke-linecap="round" stroke-width="2.2"></path>
+</svg>
+</div>
+<span class="text-[11px] font-bold text-cozy-text text-center truncate w-full">Lentes</span>
+<span class="status-chip w-full py-0.5 rounded-full bg-cozy-bg text-cozy-muted text-[10px] font-bold text-center leading-tight border border-cozy-border">Probar</span>
+</button>
+</section>
+</main>
+</div>
+<!-- ========================================================= -->
+<!-- 3. PANTALLA HÁBITOS (Habits - EXACTO SCREEN_87)           -->
+<!-- ========================================================= -->
+<div class="w-full flex flex-col hidden" id="screen-habitos" style="display: none;">
+<!-- TopBar SCREEN_87 -->
+<header class="sticky top-0 w-full z-40 bg-surface/85 backdrop-blur-xl shadow-[0_2px_12px_rgba(249,135,111,0.06)] px-5 py-3 flex items-center justify-between border-b border-[#F3E6DE]/50">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">spa</span>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-bold text-primary leading-tight">CozyFocus</span>
+<span class="text-xs text-on-surface-variant font-medium">Habits</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full shadow-xs">
+<span class="text-sm">🔥</span>
+<span class="text-xs text-primary font-bold">5</span>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+</header>
+<main class="flex-1 px-5 pt-3.5 flex flex-col gap-4 pb-6">
+<!-- Top Greeting & Weekday Selector -->
+<section class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-[11px] text-primary tracking-wider uppercase font-bold">Tu bienestar diario</span>
+<h1 class="text-xl font-bold text-on-surface">Hábitos de Hoy</h1>
+</div>
+<div class="flex items-center gap-1.5 bg-primary-fixed/60 text-primary px-3 py-1.5 rounded-full shadow-xs font-bold text-xs">
+<span class="">🔥</span>
+<span class="">Racha de 5 días</span>
+</div>
+</div>
+<!-- Weekday Selector Capsule Strip -->
+<div class="grid grid-cols-7 gap-1.5 bg-surface-container-low p-2 rounded-2xl shadow-xs text-center">
+<button aria-pressed="false" class="flex flex-col items-center py-2 px-1 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" data-day="Lunes" type="button">
+<span class="text-[10px] font-semibold opacity-70">L</span>
+<span class="text-xs font-bold mt-0.5">14</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container mt-1"></span>
+</button>
+<button aria-pressed="false" class="flex flex-col items-center py-2 px-1 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" data-day="Martes" type="button">
+<span class="text-[10px] font-semibold opacity-70">M</span>
+<span class="text-xs font-bold mt-0.5">15</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container mt-1"></span>
+</button>
+<!-- X 16 Activo en durazno -->
+<button aria-pressed="true" class="flex flex-col items-center py-2 px-1 rounded-xl bg-primary-container text-white shadow-md shadow-primary-container/30" data-day="Miércoles" type="button">
+<span class="text-[10px] font-bold opacity-90">X</span>
+<span class="text-xs font-bold mt-0.5">16</span>
+<span class="w-1.5 h-1.5 rounded-full bg-white mt-1"></span>
+</button>
+<button aria-pressed="false" class="flex flex-col items-center py-2 px-1 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" data-day="Jueves" type="button">
+<span class="text-[10px] font-semibold opacity-70">J</span>
+<span class="text-xs font-bold mt-0.5">17</span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-high mt-1"></span>
+</button>
+<button aria-pressed="false" class="flex flex-col items-center py-2 px-1 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" data-day="Viernes" type="button">
+<span class="text-[10px] font-semibold opacity-70">V</span>
+<span class="text-xs font-bold mt-0.5">18</span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-high mt-1"></span>
+</button>
+<button aria-pressed="false" class="flex flex-col items-center py-2 px-1 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" data-day="Sábado" type="button">
+<span class="text-[10px] font-semibold opacity-70">S</span>
+<span class="text-xs font-bold mt-0.5">19</span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-high mt-1"></span>
+</button>
+<button aria-pressed="false" class="flex flex-col items-center py-2 px-1 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" data-day="Domingo" type="button">
+<span class="text-[10px] font-semibold opacity-70">D</span>
+<span class="text-xs font-bold mt-0.5">20</span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-high mt-1"></span>
+</button>
+</div>
+</section>
+<!-- Progreso del Día (60%) Bento Card -->
+<section class="bg-surface-container-lowest rounded-3xl p-4 shadow-sm flex flex-col gap-2.5 border border-[#dcc0bb]/30">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-9 h-9 rounded-full bg-secondary-fixed flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined text-[20px]">donut_large</span>
+</div>
+<div>
+<h2 class="text-sm font-bold text-on-surface leading-tight">Progreso del Día</h2>
+<p class="text-xs text-on-surface-variant" id="habits-count-text">3 de 5 completados hoy</p>
+</div>
+</div>
+<span class="text-xl font-bold text-primary" id="habits-progress-pct">60%</span>
+</div>
+<!-- Soft Pill Bar -->
+<div class="w-full bg-surface-container-high h-2.5 rounded-full overflow-hidden p-0.5">
+<div class="bg-primary-container h-full rounded-full transition-all duration-500 ease-out" id="habits-progress-bar" style="width: 60%;"></div>
+</div>
+<div class="flex items-center justify-between pt-0.5">
+<span class="text-xs text-on-surface-variant">✨ ¡Vas por excelente camino!</span>
+<span class="text-xs text-primary font-semibold" id="habits-remaining-text">2 restantes</span>
+</div>
+</section>
+<!-- Lista Interactiva "Rutina Activa" -->
+<section class="flex flex-col gap-2.5" id="habit-list">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-bold text-on-surface">Rutina Activa</h3>
+<span class="text-[11px] text-on-surface-variant bg-surface-container px-2.5 py-0.5 rounded-full font-medium" id="selected-habit-day-label">Miércoles</span>
+</div>
+<!-- Hábito 1: Beber agua -->
+<div class="habit-interactive-row bg-surface-container-lowest p-3.5 rounded-2xl shadow-sm flex items-center justify-between border border-[#dcc0bb]/20 cursor-pointer transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<button aria-label="Completado" class="habit-toggle-btn w-9 h-9 rounded-full bg-secondary-container/50 text-[#384c34] flex items-center justify-center shrink-0 transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
+</button>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-sm">💧</span>
+<span class="habit-title text-xs font-bold text-on-surface line-through opacity-70 truncate">Beber agua</span>
+</div>
+<span class="text-[11px] text-on-surface-variant">8 de 8 vasos cumplidos</span>
+</div>
+</div>
+<span class="text-[10px] bg-secondary-fixed text-primary px-2.5 py-1 rounded-full font-bold whitespace-nowrap">
+              ¡Meta lograda!
+            </span>
+</div>
+<!-- Hábito 2: Estiramiento suave -->
+<div class="habit-interactive-row bg-surface-container-lowest p-3.5 rounded-2xl shadow-sm flex items-center justify-between border border-[#dcc0bb]/20 cursor-pointer transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<button aria-label="Marcar como hecho" class="habit-toggle-btn w-9 h-9 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0 transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[19px]">circle</span>
+</button>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-sm">🧘</span>
+<span class="habit-title text-xs font-bold text-on-surface truncate">Estiramiento suave</span>
+</div>
+<span class="text-[11px] text-on-surface-variant">15 min • Pausa activa</span>
+</div>
+</div>
+</div>
+<!-- Hábito 3: Lectura tranquila -->
+<div class="habit-interactive-row bg-surface-container-lowest p-3.5 rounded-2xl shadow-sm flex flex-col gap-2 border border-[#dcc0bb]/20 cursor-pointer transition-all">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 min-w-0">
+<button aria-label="Marcar como hecho" class="habit-toggle-btn w-9 h-9 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0 active:scale-90" type="button">
+<span class="material-symbols-outlined text-[19px]">circle</span>
+</button>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-sm">📖</span>
+<span class="habit-title text-xs font-bold text-on-surface truncate">Lectura tranquila</span>
+</div>
+<span class="text-[11px] text-on-surface-variant" id="reading-progress-label">15 / 30 páginas</span>
+</div>
+</div>
+<button aria-label="Añadir cinco páginas" class="w-7 h-7 rounded-full bg-surface-container-low text-on-surface-variant flex items-center justify-center active:scale-90 text-xs font-bold" id="reading-progress-button" type="button">
+                +5
+              </button>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden pl-10 pr-1">
+<div class="bg-secondary h-full rounded-full" id="reading-progress-bar" style="width: 50%;"></div>
+</div>
+</div>
+<!-- Hábito 4: Paseo consciente -->
+<div class="habit-interactive-row bg-surface-container-lowest p-3.5 rounded-2xl shadow-sm flex items-center justify-between border border-[#dcc0bb]/20 cursor-pointer transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<button aria-label="Marcar como hecho" class="habit-toggle-btn w-9 h-9 rounded-full bg-secondary-container/50 text-[#384c34] flex items-center justify-center shrink-0 active:scale-90" type="button">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
+</button>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-sm">🌿</span>
+<span class="habit-title text-xs font-bold text-on-surface line-through opacity-70 truncate">Paseo consciente</span>
+</div>
+<span class="text-[11px] text-on-surface-variant">20 mins al aire libre</span>
+</div>
+</div>
+<span class="text-[10px] text-on-surface-variant bg-surface-container-low px-2.5 py-1 rounded-full">
+              Tarde
+            </span>
+</div>
+<!-- Hábito 5: Diario de gratitud -->
+<div class="habit-interactive-row bg-surface-container-lowest p-3.5 rounded-2xl shadow-sm flex items-center justify-between border border-[#dcc0bb]/20 cursor-pointer transition-all">
+<div class="flex items-center gap-3 min-w-0">
+<button aria-label="Marcar como hecho" class="habit-toggle-btn w-9 h-9 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0 active:scale-90" type="button">
+<span class="material-symbols-outlined text-[19px]">schedule</span>
+</button>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="text-sm">✍️</span>
+<span class="habit-title text-xs font-bold text-on-surface truncate">Diario de gratitud</span>
+</div>
+<span class="text-[11px] text-on-surface-variant">Programado para las 21:00</span>
+</div>
+</div>
+<span class="text-[10px] text-tertiary bg-tertiary-fixed/40 px-2.5 py-1 rounded-full font-medium">
+              🌙 Noche
+            </span>
+</div>
+</section>
+<!-- Botón + Añadir nuevo hábito -->
+<div class="pt-1">
+<button aria-expanded="false" class="w-full bg-[#ffdad3]/50 hover:bg-[#ffdad3] text-primary py-3 rounded-full text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-all active:scale-[0.98]" id="add-habit-button" type="button">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+<span class="">Añadir nuevo hábito</span>
+</button>
+</div>
+<form class="hidden flex-col gap-2 rounded-2xl bg-surface-container-lowest p-3 shadow-sm" id="new-habit-form">
+  <label class="text-xs font-bold text-on-surface" for="new-habit-name">Nombre del hábito</label>
+  <input class="rounded-xl border border-[#dcc0bb] bg-white px-3 py-2 text-sm" id="new-habit-name" maxlength="60" required type="text">
+  <div class="flex justify-end gap-2">
+    <button class="rounded-full bg-surface-container px-4 py-2 text-xs font-bold text-on-surface-variant" id="cancel-new-habit" type="button">Cancelar</button>
+    <button class="rounded-full bg-primary-container px-4 py-2 text-xs font-bold text-white" type="submit">Guardar hábito</button>
+  </div>
+</form>
+<!-- Tarjeta "Un cariñito diario" -->
+<section class="bg-surface-container-low rounded-3xl p-3.5 shadow-sm flex items-center gap-3 mt-1 border border-[#dcc0bb]/20">
+<div class="w-14 h-14 rounded-2xl overflow-hidden flex-shrink-0 bg-surface-container border border-cozy-border">
+<img alt="Mochi tomando té en manta" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrHc1gN38-vZ60brxjBJl-bCV3JxUzYvRegtqXb_eXTx8RtKWhh1TM3PF1mGFa-oxiwNIlw1sZ49RnpJAv2vHOZ0YdagDY8locRKVdZrcog0HFSOIvw2LGK25yYZUbslrty3REM94RkHKR_69A3C7_Kbsgu_BTom5DRBTQkzRETKhQBR4oP1K0XRJhNJNhkPCOCw-BuFtIg3UfeYYkbz8_Bv8CYhCafVoYQ-WyGLH1sRXypOmNlfnB">
+</div>
+<div class="flex flex-col min-w-0">
+<span class="text-xs text-primary font-bold">Un cariñito diario</span>
+<p class="text-[11px] text-on-surface-variant italic leading-snug">
+              "Recuerda descansar los ojitos y celebrar cada pequeño paso hoy 🐾"
+            </p>
+</div>
+</section>
+</main>
+</div>
+<!-- ========================================================= -->
+<!-- 4. BARRA DE NAVEGACIÓN INFERIOR (Fixed Bottom Nav)        -->
+<!-- EXACTO SCREEN_58 & SCREEN_87: Home, Items, Habits, Settings -->
+<!-- ========================================================= -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto z-50 bg-surface/90 backdrop-blur-xl border-t border-[#F3E6DE] shadow-[0_-4px_16px_rgba(249,135,111,0.08)] flex justify-around items-center px-2 py-2" data-purpose="tab-navigation">
+<!-- 1. Home / Enfoque -->
+<button class="nav-button flex flex-col items-center justify-center bg-[#FFEAE5] text-[#F9876F] rounded-full px-5 py-1.5 transition-all duration-200 active:scale-95 cursor-pointer" id="nav-btn-home" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: &quot;FILL&quot; 1;">home</span>
+<span class="text-[11px] font-bold">Inicio</span>
+</button>
+<!-- 2. Items / Armario -->
+<button class="nav-button flex flex-col items-center justify-center text-[#86736f] hover:text-[#F9876F] px-5 py-1.5 rounded-full transition-all duration-200 active:scale-95 cursor-pointer" id="nav-btn-armario" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: &quot;FILL&quot; 0;">inventory_2</span>
+<span class="text-[11px] font-medium">Items</span>
+</button>
+<!-- 3. Habits / Hábitos -->
+<button class="nav-button flex flex-col items-center justify-center text-[#86736f] hover:text-[#F9876F] px-5 py-1.5 rounded-full transition-all duration-200 active:scale-95 cursor-pointer" id="nav-btn-habitos" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: &quot;FILL&quot; 0;">checklist</span>
+<span class="text-[11px] font-medium">Habits</span>
+</button>
+<!-- 4. Settings (Ajustes) -->
+<button class="nav-button flex flex-col items-center justify-center text-[#86736f] hover:text-[#F9876F] px-5 py-1.5 rounded-full transition-all duration-200 active:scale-95 cursor-pointer" id="nav-btn-settings" type="button">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: &quot;FILL&quot; 0;">settings</span>
+<span class="text-[11px] font-medium">Settings</span>
+</button>
+</nav>
+</div>
+<!-- ========================================================= -->
+<!-- COMPLETE ENGINE SCRIPT: SPA ROUTER, TIMER, WARDROBE & HABITS -->
+<!-- ========================================================= -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      function showToast(message) {
+        let toast = document.getElementById('action-message');
+        if (!toast) {
+          toast = document.createElement('div');
+          toast.id = 'action-message';
+          toast.className = 'fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 rounded-full bg-on-background px-4 py-2 text-sm text-white shadow-lg';
+          toast.setAttribute('role', 'status');
+          document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.hidden = false;
+        clearTimeout(toast.hideTimer);
+        toast.hideTimer = setTimeout(() => {
+          toast.hidden = true;
+        }, 2400);
+      }
+
+      // ----------------------------------------------------
+      // 1. SPA VIEW CONTROLLER
+      // ----------------------------------------------------
+      const screens = {
+        home: document.getElementById('screen-home'),
+        armario: document.getElementById('screen-armario'),
+        habitos: document.getElementById('screen-habitos'),
+        settings: document.getElementById('screen-settings')
+      };
+
+      const navButtons = {
+        home: document.getElementById('nav-btn-home'),
+        armario: document.getElementById('nav-btn-armario'),
+        habitos: document.getElementById('nav-btn-habitos'),
+        settings: document.getElementById('nav-btn-settings')
+      };
+
+      function switchScreen(target) {
+        if (!screens[target]) return;
+
+        // Toggle screen visibility
+        Object.keys(screens).forEach(key => {
+          if (screens[key]) {
+            if (key === target) {
+              screens[key].style.display = 'flex';
+              screens[key].classList.remove('hidden');
+            } else {
+              screens[key].style.display = 'none';
+              screens[key].classList.add('hidden');
+            }
+          }
+        });
+
+        // Update nav button active states
+        Object.keys(navButtons).forEach(key => {
+          const btn = navButtons[key];
+          if (!btn) return;
+          const icon = btn.querySelector('.material-symbols-outlined');
+          const label = btn.querySelector('span:last-child');
+
+          if (key === target) {
+            btn.className = 'nav-button flex flex-col items-center justify-center bg-[#FFEAE5] text-[#F9876F] rounded-full px-5 py-1.5 transition-all duration-200 active:scale-95 cursor-pointer';
+            if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+            if (label) {
+              label.classList.add('font-bold');
+              label.classList.remove('font-medium');
+            }
+          } else {
+            btn.className = 'nav-button flex flex-col items-center justify-center text-[#86736f] hover:text-[#F9876F] px-5 py-1.5 rounded-full transition-all duration-200 active:scale-95 cursor-pointer';
+            if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+            if (label) {
+              label.classList.remove('font-bold');
+              label.classList.add('font-medium');
+            }
+          }
+        });
+
+        // Instant smooth scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      navButtons.home?.addEventListener('click', () => switchScreen('home'));
+      navButtons.armario?.addEventListener('click', () => switchScreen('armario'));
+      navButtons.habitos?.addEventListener('click', () => switchScreen('habitos'));
+      navButtons.settings?.addEventListener('click', () => switchScreen('settings'));
+
+      const menuButton = document.getElementById('menu-button');
+      const quickMenu = document.createElement('nav');
+      quickMenu.className = 'fixed left-4 top-16 z-[60] min-w-40 flex-col gap-1 rounded-2xl bg-white p-2 shadow-xl';
+      quickMenu.hidden = true;
+      quickMenu.setAttribute('aria-label', 'Navegación rápida');
+      [
+        ['home', 'Inicio'],
+        ['armario', 'Armario'],
+        ['habitos', 'Hábitos'],
+        ['settings', 'Configuración']
+      ].forEach(([screen, label]) => {
+        const button = document.createElement('button');
+        button.className = 'rounded-xl px-3 py-2 text-left text-sm font-semibold text-on-surface hover:bg-surface-container-low';
+        button.dataset.screen = screen;
+        button.textContent = label;
+        quickMenu.appendChild(button);
+      });
+      document.body.appendChild(quickMenu);
+      function setQuickMenuOpen(isOpen) {
+        quickMenu.hidden = !isOpen;
+        quickMenu.classList.toggle('flex', isOpen);
+        menuButton?.setAttribute('aria-expanded', String(isOpen));
+      }
+      menuButton?.addEventListener('click', () => {
+        setQuickMenuOpen(quickMenu.hidden);
+      });
+      quickMenu.addEventListener('click', event => {
+        const button = event.target.closest('button[data-screen]');
+        if (!button) return;
+        switchScreen(button.dataset.screen);
+        setQuickMenuOpen(false);
+      });
+      document.addEventListener('click', event => {
+        if (quickMenu.hidden || quickMenu.contains(event.target) || menuButton?.contains(event.target)) return;
+        setQuickMenuOpen(false);
+      });
+
+      document.getElementById('profile-button')?.addEventListener('click', () => {
+        showToast('Perfil de estudiante · Nivel 4 · Racha de 5 días');
+      });
+
+      document.getElementById('redeem-hours-button')?.addEventListener('click', () => {
+        switchScreen('home');
+        document.getElementById('home-timer-start-btn')?.focus();
+        showToast('Inicia una sesión de enfoque para seguir ganando zanahorias.');
+      });
+
+      document.querySelectorAll('[data-period]').forEach(button => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('[data-period]').forEach(periodButton => {
+            const selected = periodButton === button;
+            periodButton.setAttribute('aria-pressed', String(selected));
+            periodButton.className = selected
+              ? 'px-4 py-1.5 rounded-full bg-[#F9876F] text-white font-bold shadow-sm'
+              : 'px-3 py-1.5 rounded-full hover:text-[#1E1E1E] transition-colors';
+          });
+          document.getElementById('stats-period-label').textContent = `Periodo: ${button.dataset.period}`;
+        });
+      });
+
+      const selectedDayLabel = document.getElementById('selected-habit-day-label');
+      document.querySelectorAll('[data-day]').forEach(button => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('[data-day]').forEach(dayButton => {
+            const selected = dayButton === button;
+            dayButton.setAttribute('aria-pressed', String(selected));
+            dayButton.className = selected
+              ? 'flex flex-col items-center py-2 px-1 rounded-xl bg-primary-container text-white shadow-md shadow-primary-container/30'
+              : 'flex flex-col items-center py-2 px-1 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors';
+          });
+          selectedDayLabel.textContent = button.dataset.day;
+        });
+      });
+
+      const focusDurationSelect = document.getElementById('focus-duration-select');
+      let focusDurationMinutes = Number(focusDurationSelect?.value || 25);
+
+      // Banner "Bunny's Closet" en pantalla Home lleva directo a Armario
+      const bannerCloset = document.getElementById('banner-to-closet');
+      if (bannerCloset) {
+        bannerCloset.addEventListener('click', () => {
+          switchScreen('armario');
+        });
+      }
+
+      // ----------------------------------------------------
+      // 2. FOCUS TIMER INTERACTIVO (SCREEN_58)
+      // ----------------------------------------------------
+      let focusSeconds = focusDurationMinutes * 60;
+      let focusInterval = null;
+      let isFocusRunning = false;
+      const displayTimer = document.getElementById('home-timer-display');
+      const startBtn = document.getElementById('home-timer-start-btn');
+      const resetBtn = document.getElementById('home-timer-reset-btn');
+
+      function formatFocusTime(sec) {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }
+
+      function updateTimerDisplay() {
+        if (displayTimer) displayTimer.textContent = formatFocusTime(focusSeconds);
+      }
+
+      function toggleTimer() {
+        if (isFocusRunning) {
+          clearInterval(focusInterval);
+          isFocusRunning = false;
+          if (startBtn) startBtn.textContent = 'Start';
+        } else {
+          isFocusRunning = true;
+          if (startBtn) startBtn.textContent = 'Pause';
+          focusInterval = setInterval(() => {
+            if (focusSeconds > 0) {
+              focusSeconds--;
+              updateTimerDisplay();
+            } else {
+              clearInterval(focusInterval);
+              isFocusRunning = false;
+              if (startBtn) startBtn.textContent = 'Start';
+              showToast('¡Sesión de enfoque completada! Descansa 5 minutos.');
+            }
+          }, 1000);
+        }
+      }
+
+      function resetFocusTimer() {
+        if (focusInterval) clearInterval(focusInterval);
+        isFocusRunning = false;
+        focusSeconds = 25 * 60;
+        updateTimerDisplay();
+        if (startBtn) startBtn.textContent = 'Start';
+      }
+
+      startBtn?.addEventListener('click', toggleTimer);
+      resetBtn?.addEventListener('click', resetFocusTimer);
+      focusDurationSelect?.addEventListener('change', () => {
+        if (isFocusRunning) {
+          focusDurationSelect.value = String(focusDurationMinutes);
+          showToast('Pausa la sesión antes de cambiar su duración.');
+          return;
+        }
+        focusDurationMinutes = Number(focusDurationSelect.value);
+        focusSeconds = focusDurationMinutes * 60;
+        updateTimerDisplay();
+      });
+
+      // ----------------------------------------------------
+      // 3. VESTIDOR Y ARMARIO INTERACTIVO (SCREEN_16)
+      // ----------------------------------------------------
+      const WARDROBE = {
+        'striped-sweater': {
+          type: 'clothing',
+          name: 'Rayas Terracota',
+          quote: '¡Me queda perfecto! Listo para estudiar y dar lo mejor.',
+          bodySvg: `
+            <g class="animate-pop" id="garment-striped">
+              <path d="M82 142 C64 148 56 164 62 172 C65 176 72 176 76 169 C82 160 84 148 86 142 Z" fill="#D97757" stroke="#523932" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M60 156 C65 159 76 156 82 150" stroke="#FFF5EB" stroke-width="3.8" stroke-linecap="round" fill="none"/>
+              <path d="M60 165 C64 167 72 165 76 161" stroke="#FFF5EB" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path d="M59 168 C63 173 73 171 76 165" fill="#C85A32" stroke="#523932" stroke-width="2"/>
+
+              <path d="M158 142 C176 148 184 164 178 172 C175 176 168 176 164 169 C158 160 156 148 154 142 Z" fill="#D97757" stroke="#523932" stroke-width="2.2" stroke-linejoin="round"/>
+              <path d="M180 156 C175 159 164 156 158 150" stroke="#FFF5EB" stroke-width="3.8" stroke-linecap="round" fill="none"/>
+              <path d="M180 165 C176 167 168 165 164 161" stroke="#FFF5EB" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <path d="M181 168 C177 173 167 171 164 165" fill="#C85A32" stroke="#523932" stroke-width="2"/>
+
+              <path d="M78 142 C68 160 66 188 75 204 C84 212 156 212 165 204 C174 188 172 160 162 142 Z" fill="#D97757" stroke="#523932" stroke-width="2.3"/>
+              <path d="M74 160 C90 170 150 170 166 160" fill="none" stroke="#FFF5EB" stroke-width="7.5" stroke-linecap="round"/>
+              <path d="M73 178 C90 190 150 190 167 178" fill="none" stroke="#FFF5EB" stroke-width="7.5" stroke-linecap="round"/>
+
+              <path d="M75 198 C88 206 152 206 165 198 L163 207 C150 215 90 215 77 207 Z" fill="#C85A32" stroke="#523932" stroke-width="2"/>
+            </g>
+          `,
+          collarSvg: `
+            <g class="animate-pop" id="garment-collar-striped">
+              <path d="M88 140 C100 148 140 148 152 140 C154 146 142 152 120 152 C98 152 86 146 88 140 Z" fill="#C85A32" stroke="#523932" stroke-width="2"/>
+            </g>
+          `
+        },
+        'floral-dress': {
+          type: 'clothing',
+          name: 'Vestido Floral',
+          quote: '¡Qué lindo y primaveral! Siento aroma a lavanda y flores silvestres.',
+          bodySvg: `
+            <g class="animate-pop" id="garment-floral">
+              <path d="M82 142 C66 144 58 160 64 170 C68 174 74 172 78 166 C83 158 84 148 86 142 Z" fill="#E8D7F1" stroke="#523932" stroke-width="2.2"/>
+              <path d="M158 142 C174 144 182 160 176 170 C172 174 166 172 162 166 C157 158 156 148 154 142 Z" fill="#E8D7F1" stroke="#523932" stroke-width="2.2"/>
+              <path d="M85 142 L72 178 C65 198 62 214 74 218 C92 223 148 223 166 218 C178 214 175 198 168 178 L155 142 Z" fill="#E8D7F1" stroke="#523932" stroke-width="2.3"/>
+              <path d="M78 174 C95 180 145 180 162 174 L161 179 C145 185 95 185 79 179 Z" fill="#F9876F" stroke="#523932" stroke-width="1.8"/>
+              <circle cx="120" cy="177" r="3" fill="#E07A5F"/>
+              <g id="skirt-flowers">
+                <circle cx="92" cy="196" r="3" fill="#F9876F"/>
+                <circle cx="92" cy="196" r="1.2" fill="#FFFFFF"/>
+                <circle cx="118" cy="204" r="3.2" fill="#F9876F"/>
+                <circle cx="118" cy="204" r="1.3" fill="#FFFFFF"/>
+                <circle cx="145" cy="198" r="3" fill="#F9876F"/>
+                <circle cx="145" cy="198" r="1.2" fill="#FFFFFF"/>
+              </g>
+            </g>
+          `,
+          collarSvg: `
+            <g class="animate-pop" id="garment-collar-floral">
+              <path d="M88 141 C98 148 142 148 152 141 C144 150 132 153 120 152 C108 153 96 150 88 141 Z" fill="#FFFFFF" stroke="#523932" stroke-width="2"/>
+            </g>
+          `
+        },
+        'garden-overalls': {
+          type: 'clothing',
+          name: 'Peto Jardín',
+          quote: '¡Peto overol listo! Hora de cosechar horas de concentración.',
+          bodySvg: `
+            <g class="animate-pop" id="garment-overalls">
+              <path d="M82 142 C64 148 56 164 62 172 C65 176 72 176 76 169 C82 160 84 148 86 142 Z" fill="#FFF2CC" stroke="#523932" stroke-width="2.2"/>
+              <path d="M158 142 C176 148 184 164 178 172 C175 176 168 176 164 169 C158 160 156 148 154 142 Z" fill="#FFF2CC" stroke="#523932" stroke-width="2.2"/>
+              <path d="M78 142 C68 160 66 188 75 204 C84 212 156 212 165 204 C174 188 172 160 162 142 Z" fill="#FFF2CC" stroke="#523932" stroke-width="2.3"/>
+              <path d="M96 142 L96 166 L104 166 L104 142 Z" fill="#D97757" stroke="#523932" stroke-width="1.8"/>
+              <path d="M136 142 L136 166 L144 166 L144 142 Z" fill="#D97757" stroke="#523932" stroke-width="1.8"/>
+              <path d="M92 164 L148 164 L152 176 L164 204 C155 214 85 214 76 204 L88 176 Z" fill="#D97757" stroke="#523932" stroke-width="2.2"/>
+              <rect x="108" y="172" width="24" height="20" rx="3" fill="#C85A32" stroke="#523932" stroke-width="1.6"/>
+            </g>
+          `,
+          collarSvg: `
+            <g class="animate-pop" id="garment-collar-overalls">
+              <path d="M88 141 C100 148 140 148 152 141 C144 148 132 150 120 149 C108 150 96 148 88 141 Z" fill="#FFF2CC" stroke="#523932" stroke-width="2"/>
+            </g>
+          `
+        },
+        'green-sweater': {
+          type: 'clothing',
+          name: 'Verde Musgo',
+          quote: '¡Qué suavecita esta lana verde! Ideal para leer tranquilamente.',
+          bodySvg: `
+            <g class="animate-pop" id="garment-green">
+              <path d="M82 142 C64 148 56 164 62 172 C65 176 72 176 76 169 C82 160 84 148 86 142 Z" fill="#4F7A5E" stroke="#523932" stroke-width="2.2"/>
+              <path d="M158 142 C176 148 184 164 178 172 C175 176 168 176 164 169 C158 160 156 148 154 142 Z" fill="#4F7A5E" stroke="#523932" stroke-width="2.2"/>
+              <path d="M78 142 C68 160 66 188 75 204 C84 212 156 212 165 204 C174 188 172 160 162 142 Z" fill="#4F7A5E" stroke="#523932" stroke-width="2.3"/>
+              <path d="M75 198 C88 206 152 206 165 198 L163 207 C150 215 90 215 77 207 Z" fill="#3B5F48" stroke="#523932" stroke-width="2"/>
+            </g>
+          `,
+          collarSvg: `
+            <g class="animate-pop" id="garment-collar-green">
+              <path d="M88 140 C100 148 140 148 152 140 C154 146 142 152 120 152 C98 152 86 146 88 140 Z" fill="#3B5F48" stroke="#523932" stroke-width="2"/>
+            </g>
+          `
+        },
+        'indigo-tee': {
+          type: 'clothing',
+          name: 'Azul Índigo',
+          quote: '¡Fresco y moderno! Me ayuda a concentrarme sin distracciones.',
+          bodySvg: `
+            <g class="animate-pop" id="garment-indigo">
+              <path d="M82 142 C64 148 56 164 62 172 C65 176 72 176 76 169 C82 160 84 148 86 142 Z" fill="#47648B" stroke="#523932" stroke-width="2.2"/>
+              <path d="M158 142 C176 148 184 164 178 172 C175 176 168 176 164 169 C158 160 156 148 154 142 Z" fill="#47648B" stroke="#523932" stroke-width="2.2"/>
+              <path d="M78 142 C68 160 66 188 75 204 C84 212 156 212 165 204 C174 188 172 160 162 142 Z" fill="#47648B" stroke="#523932" stroke-width="2.3"/>
+              <circle cx="120" cy="168" r="3" fill="#EAF3FA"/>
+            </g>
+          `,
+          collarSvg: `
+            <g class="animate-pop" id="garment-collar-indigo">
+              <path d="M88 140 C100 148 140 148 152 140 C154 146 142 152 120 152 C98 152 86 146 88 140 Z" fill="#314B68" stroke="#523932" stroke-width="2"/>
+            </g>
+          `
+        },
+        'cream-blouse': {
+          type: 'clothing',
+          name: 'Blusa de Lino',
+          quote: '¡Qué elegancia! Con mi lazo parezco un conejito escritor.',
+          bodySvg: `
+            <g class="animate-pop" id="garment-blouse">
+              <path d="M82 142 C64 148 56 164 62 172 C65 176 72 176 76 169 C82 160 84 148 86 142 Z" fill="#FBF6EE" stroke="#523932" stroke-width="2.2"/>
+              <path d="M158 142 C176 148 184 164 178 172 C175 176 168 176 164 169 C158 160 156 148 154 142 Z" fill="#FBF6EE" stroke="#523932" stroke-width="2.2"/>
+              <path d="M78 142 C68 160 66 188 75 204 C84 212 156 212 165 204 C174 188 172 160 162 142 Z" fill="#FBF6EE" stroke="#523932" stroke-width="2.3"/>
+              <circle cx="120" cy="164" r="2.2" fill="#9E412E"/>
+              <circle cx="120" cy="178" r="2.2" fill="#9E412E"/>
+            </g>
+          `,
+          collarSvg: `
+            <g class="animate-pop" id="garment-collar-blouse">
+              <path d="M88 141 C102 149 120 148 120 143 C120 148 138 149 152 141 C146 149 135 152 120 152 C105 152 94 149 88 141 Z" fill="#EDE1D1" stroke="#523932" stroke-width="2"/>
+              <circle cx="120" cy="148" r="2.8" fill="#9E412E"/>
+            </g>
+          `
+        },
+        'artist-beret': {
+          type: 'accessory',
+          name: 'Boina Artista',
+          quote: '¡Me siento pura inspiración creativa! Lista para dibujar.',
+          accSvg: `
+            <g class="animate-pop" id="acc-beret">
+              <ellipse cx="140" cy="74" rx="28" ry="14" fill="#C85A32" stroke="#523932" stroke-width="2.2" transform="rotate(-12 140 74)"/>
+              <path d="M124 73 C124 62 156 62 156 73" fill="#9E412E" stroke="#523932" stroke-width="1.8" transform="rotate(-12 140 74)"/>
+              <circle cx="140" cy="62" r="2.8" fill="#702010"/>
+            </g>
+          `
+        },
+        'study-glasses': {
+          type: 'accessory',
+          name: 'Lentes Redondos',
+          quote: '¡Veo los apuntes con ultra claridad! Modo sabio activado.',
+          accSvg: `
+            <g class="animate-pop" id="acc-glasses">
+              <circle cx="98" cy="112" r="11" fill="rgba(240, 248, 255, 0.45)" stroke="#D4AC0D" stroke-width="2.2"/>
+              <circle cx="142" cy="112" r="11" fill="rgba(240, 248, 255, 0.45)" stroke="#D4AC0D" stroke-width="2.2"/>
+              <path d="M109 112 Q120 109 131 112" fill="none" stroke="#D4AC0D" stroke-width="2.2" stroke-linecap="round"/>
+            </g>
+          `
+        }
+      };
+
+      const OUTFIT_STORAGE_KEY = 'cozyfocus.mochi.outfit';
+      let currentClothing = 'striped-sweater';
+      let currentAccessory = null;
+
+      const bodyClothEl = document.getElementById('dynamic-clothing-layer');
+      const collarClothEl = document.getElementById('dynamic-collar-top-layer');
+      const accEl = document.getElementById('dynamic-accessory-layer');
+      const homeMochiDisplay = document.getElementById('home-mochi-display');
+      const bareEl = document.getElementById('mochi-bare-body');
+      const handsEl = document.getElementById('dynamic-hands-layer');
+      const quoteEl = document.getElementById('mochi-quote');
+      const tagEl = document.getElementById('current-garment-tag');
+      const stage = document.getElementById('mochi-stage');
+      const garmentCards = document.querySelectorAll('.garment-card');
+      const catPills = document.querySelectorAll('.cat-pill');
+
+      function isValidOutfitItem(key, type) {
+        return key === null || (typeof key === 'string' && WARDROBE[key]?.type === type);
+      }
+
+      function loadSavedOutfit() {
+        try {
+          const savedOutfit = localStorage.getItem(OUTFIT_STORAGE_KEY);
+          if (!savedOutfit) return null;
+
+          const outfit = JSON.parse(savedOutfit);
+          if (
+            !outfit ||
+            !isValidOutfitItem(outfit.clothing, 'clothing') ||
+            !isValidOutfitItem(outfit.accessory, 'accessory')
+          ) {
+            console.warn('El atuendo guardado de Mochi no es válido; se usará el atuendo predeterminado.');
+            return null;
+          }
+
+          return outfit;
+        } catch (error) {
+          console.error('No se pudo cargar el atuendo guardado de Mochi.', error);
+          return null;
+        }
+      }
+
+      function saveOutfit() {
+        try {
+          localStorage.setItem(OUTFIT_STORAGE_KEY, JSON.stringify({
+            clothing: currentClothing,
+            accessory: currentAccessory
+          }));
+        } catch (error) {
+          console.error('No se pudo guardar el atuendo de Mochi.', error);
+        }
+      }
+
+      function syncHomeMochi() {
+        const wardrobeSvg = stage?.querySelector('svg');
+        if (!homeMochiDisplay || !wardrobeSvg) return;
+
+        homeMochiDisplay.replaceChildren(
+          ...Array.from(wardrobeSvg.childNodes, node => node.cloneNode(true))
+        );
+
+        const elements = [homeMochiDisplay, ...homeMochiDisplay.querySelectorAll('*')];
+        const ids = new Map();
+        elements.forEach(element => {
+          if (element.id) {
+            const originalId = element.id;
+            const homeId = `home-${originalId}`;
+            ids.set(originalId, homeId);
+            element.id = homeId;
+          }
+        });
+
+        elements.forEach(element => {
+          Array.from(element.attributes).forEach(attribute => {
+            let value = attribute.value.replace(/url\(#([^)]+)\)/g, (match, id) => {
+              return ids.has(id) ? `url(#${ids.get(id)})` : match;
+            });
+            if ((attribute.name === 'href' || attribute.name === 'xlink:href') && value.startsWith('#')) {
+              value = `#${ids.get(value.slice(1)) || value.slice(1)}`;
+            }
+            if (value !== attribute.value) {
+              element.setAttribute(attribute.name, value);
+            }
+          });
+        });
+      }
+
+      function bounceMochi() {
+        if (stage) {
+          stage.classList.remove('animate-bounce-subtle');
+          void stage.offsetWidth;
+          stage.classList.add('animate-bounce-subtle');
+        }
+      }
+
+      function updateWardrobeDisplay() {
+        // Ropa de cuerpo
+        if (currentClothing && WARDROBE[currentClothing]) {
+          const item = WARDROBE[currentClothing];
+          bodyClothEl.innerHTML = item.bodySvg;
+          collarClothEl.innerHTML = item.collarSvg;
+          if (bareEl) bareEl.style.display = 'none';
+          if (handsEl) handsEl.style.display = 'block';
+        } else {
+          bodyClothEl.innerHTML = '';
+          collarClothEl.innerHTML = '';
+          if (bareEl) bareEl.style.display = 'block';
+          if (handsEl) handsEl.style.display = 'none';
+        }
+
+        // Accesorio
+        if (currentAccessory && WARDROBE[currentAccessory]) {
+          accEl.innerHTML = WARDROBE[currentAccessory].accSvg;
+        } else {
+          accEl.innerHTML = '';
+        }
+
+        syncHomeMochi();
+        saveOutfit();
+
+        // Textos
+        let tag = 'Al natural';
+        let quote = '"¡Fresquito y listo para estirar mis patitas al sol!"';
+        if (currentClothing && currentAccessory) {
+          tag = `${WARDROBE[currentClothing].name} + ${WARDROBE[currentAccessory].name}`;
+          quote = `"${WARDROBE[currentClothing].quote.replace(/"/g, '')} ¡Y con mis ${WARDROBE[currentAccessory].name.toLowerCase()} me veo genial!"`;
+        } else if (currentClothing) {
+          tag = WARDROBE[currentClothing].name;
+          quote = WARDROBE[currentClothing].quote;
+        } else if (currentAccessory) {
+          tag = WARDROBE[currentAccessory].name;
+          quote = WARDROBE[currentAccessory].quote;
+        }
+
+        if (tagEl) tagEl.textContent = tag;
+        if (quoteEl) quoteEl.textContent = quote;
+
+        // Estado visual de los botones de prendas
+        garmentCards.forEach(card => {
+          const key = card.getAttribute('data-item');
+          const chip = card.querySelector('.status-chip');
+          const isSelected = (key === currentClothing || key === currentAccessory);
+          card.setAttribute('aria-pressed', String(isSelected));
+
+          if (isSelected) {
+            card.className = 'garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border-2 border-cozy-coralDark bg-cozy-badge/30 shadow-card active:scale-95 transition-all h-28 relative cursor-pointer';
+            if (chip) {
+              chip.textContent = 'Puesto';
+              chip.className = 'status-chip w-full py-0.5 rounded-full text-[10px] font-bold text-center leading-tight bg-cozy-coralDark text-white';
+            }
+          } else {
+            card.className = 'garment-card group flex flex-col items-center justify-between p-2 rounded-2xl bg-white border border-cozy-border hover:border-cozy-coral/40 shadow-sm active:scale-95 transition-all h-28 relative cursor-pointer';
+            if (chip) {
+              chip.textContent = 'Probar';
+              chip.className = 'status-chip w-full py-0.5 rounded-full bg-cozy-bg text-cozy-muted text-[10px] font-bold text-center leading-tight border border-cozy-border';
+            }
+          }
+        });
+      }
+
+      garmentCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const key = card.getAttribute('data-item');
+          const data = WARDROBE[key];
+          if (!data) return;
+
+          bounceMochi();
+          if (data.type === 'clothing') {
+            currentClothing = (currentClothing === key) ? null : key;
+          } else if (data.type === 'accessory') {
+            currentAccessory = (currentAccessory === key) ? null : key;
+          }
+          updateWardrobeDisplay();
+        });
+      });
+
+      const savedOutfit = loadSavedOutfit();
+      if (savedOutfit) {
+        currentClothing = savedOutfit.clothing;
+        currentAccessory = savedOutfit.accessory;
+      }
+
+      // Filtros por categoría
+      catPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          catPills.forEach(p => {
+            p.className = 'cat-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-cozy-text/80 border border-cozy-border text-xs font-semibold hover:border-cozy-coral/40 active:scale-95 transition-all whitespace-nowrap cursor-pointer';
+          });
+          pill.className = 'cat-pill flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-cozy-coralDark text-white shadow-pill text-xs font-bold active:scale-95 transition-all whitespace-nowrap cursor-pointer';
+
+          const selected = pill.getAttribute('data-cat');
+          garmentCards.forEach(card => {
+            const cat = card.getAttribute('data-cat');
+            if (selected === 'all' || cat === selected) {
+              card.style.display = 'flex';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // ----------------------------------------------------
+      // 4. HÁBITOS INTERACTIVOS (SCREEN_87)
+      // ----------------------------------------------------
+      const getHabitRows = () => document.querySelectorAll('.habit-interactive-row');
+      const progressBar = document.getElementById('habits-progress-bar');
+      const progressPct = document.getElementById('habits-progress-pct');
+      const progressText = document.getElementById('habits-count-text');
+      const remainingText = document.getElementById('habits-remaining-text');
+      const homeHabitProgress = document.getElementById('home-habit-progress');
+
+      function recalculateHabits() {
+        const habitRows = getHabitRows();
+        let total = habitRows.length;
+        let completed = 0;
+
+        habitRows.forEach(row => {
+          const btn = row.querySelector('.habit-toggle-btn');
+          const icon = btn ? btn.querySelector('.material-symbols-outlined') : null;
+          const isDone = icon && (icon.textContent === 'check_circle' || icon.textContent === 'check');
+          if (isDone) completed++;
+        });
+
+        const pct = total ? Math.round((completed / total) * 100) : 0;
+        if (progressBar) progressBar.style.width = `${pct}%`;
+        if (progressPct) progressPct.textContent = `${pct}%`;
+        if (progressText) progressText.textContent = `${completed} de ${total} completados hoy`;
+        if (remainingText) remainingText.textContent = `${total - completed} restantes`;
+        if (homeHabitProgress) homeHabitProgress.textContent = `${completed}/${total} Done`;
+      }
+
+      function bindHabitRow(row) {
+        const toggleBtn = row.querySelector('.habit-toggle-btn');
+        const title = row.querySelector('.habit-title');
+
+        row.addEventListener('click', (e) => {
+          if (e.target.closest('button:not(.habit-toggle-btn)')) return;
+
+          if (toggleBtn) {
+            const icon = toggleBtn.querySelector('.material-symbols-outlined');
+            if (icon) {
+              const isChecked = icon.textContent === 'check_circle';
+              if (isChecked) {
+                icon.textContent = 'circle';
+                icon.style.fontVariationSettings = "'FILL' 0";
+                toggleBtn.setAttribute('aria-pressed', 'false');
+                toggleBtn.setAttribute('aria-label', 'Marcar como hecho');
+                toggleBtn.classList.remove('bg-secondary-container/50', 'text-[#384c34]');
+                toggleBtn.classList.add('bg-surface-container', 'text-on-surface-variant');
+                if (title) {
+                  title.classList.remove('line-through', 'opacity-70');
+                }
+              } else {
+                icon.textContent = 'check_circle';
+                icon.style.fontVariationSettings = "'FILL' 1";
+                toggleBtn.setAttribute('aria-pressed', 'true');
+                toggleBtn.setAttribute('aria-label', 'Marcar como pendiente');
+                toggleBtn.classList.add('bg-secondary-container/50', 'text-[#384c34]');
+                toggleBtn.classList.remove('bg-surface-container', 'text-on-surface-variant');
+                if (title) {
+                  title.classList.add('line-through', 'opacity-70');
+                }
+              }
+              recalculateHabits();
+            }
+          }
+        });
+      }
+
+      getHabitRows().forEach(bindHabitRow);
+
+      const addHabitButton = document.getElementById('add-habit-button');
+      const newHabitForm = document.getElementById('new-habit-form');
+      const newHabitName = document.getElementById('new-habit-name');
+      const habitList = document.getElementById('habit-list');
+      addHabitButton?.addEventListener('click', () => {
+        newHabitForm.classList.remove('hidden');
+        newHabitForm.classList.add('flex');
+        addHabitButton.setAttribute('aria-expanded', 'true');
+        newHabitName.focus();
+      });
+      document.getElementById('cancel-new-habit')?.addEventListener('click', () => {
+        newHabitForm.classList.add('hidden');
+        newHabitForm.classList.remove('flex');
+        addHabitButton.setAttribute('aria-expanded', 'false');
+        newHabitForm.reset();
+      });
+      newHabitForm?.addEventListener('submit', event => {
+        event.preventDefault();
+        const name = newHabitName.value.trim();
+        if (!name) {
+          newHabitName.focus();
+          return;
+        }
+
+        const row = document.createElement('div');
+        row.className = 'habit-interactive-row flex cursor-pointer items-center justify-between rounded-2xl border border-[#dcc0bb]/20 bg-surface-container-lowest p-3.5 shadow-sm transition-all';
+        row.innerHTML = '<div class="flex min-w-0 items-center gap-3"><button aria-label="Marcar como hecho" aria-pressed="false" class="habit-toggle-btn flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-container text-on-surface-variant active:scale-90" type="button"><span class="material-symbols-outlined text-[19px]">circle</span></button><div class="flex min-w-0 flex-col"><div class="flex items-center gap-1.5"><span class="text-sm">✨</span><span class="habit-title truncate text-xs font-bold text-on-surface"></span></div><span class="text-[11px] text-on-surface-variant">Nuevo hábito</span></div></div>';
+        row.querySelector('.habit-title').textContent = name;
+        habitList.appendChild(row);
+        bindHabitRow(row);
+        recalculateHabits();
+        newHabitForm.reset();
+        newHabitForm.classList.add('hidden');
+        newHabitForm.classList.remove('flex');
+        addHabitButton.setAttribute('aria-expanded', 'false');
+        showToast(`Hábito añadido: ${name}`);
+      });
+
+      const readingProgressButton = document.getElementById('reading-progress-button');
+      readingProgressButton?.addEventListener('click', () => {
+        const label = document.getElementById('reading-progress-label');
+        const progress = document.getElementById('reading-progress-bar');
+        const match = label.textContent.match(/\d+/);
+        const pages = Math.min(Number(match?.[0] || 0) + 5, 30);
+        label.textContent = `${pages} / 30 páginas`;
+        progress.style.width = `${(pages / 30) * 100}%`;
+        if (pages === 30) {
+          readingProgressButton.disabled = true;
+          const readingHabit = readingProgressButton.closest('.habit-interactive-row');
+          const toggleButton = readingHabit.querySelector('.habit-toggle-btn');
+          if (toggleButton.getAttribute('aria-pressed') !== 'true') toggleButton.click();
+          showToast('¡Meta de lectura completada!');
+        } else {
+          showToast(`Lectura actualizada: ${pages} de 30 páginas.`);
+        }
+      });
+
+      // Inicialización de Estados
+      updateWardrobeDisplay();
+      updateTimerDisplay();
+      recalculateHabits();
+      const requestedScreen = {
+        '#screen-armario': 'armario',
+        '#screen-habitos': 'habitos',
+        '#screen-settings': 'settings'
+      }[window.location.hash] || 'home';
+      switchScreen(requestedScreen);
+    });
+  </script>
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface"><div class="flex flex-col w-full px-margin pb-8 space-y-space-md">
+
+<!-- #region Bunny Companion Showcase Header Card -->
+<div class="relative bg-surface-container-lowest rounded-lg p-space-md shadow-sm flex flex-col items-center overflow-hidden">
+<div class="absolute -top-12 -right-12 w-40 h-40 bg-primary-fixed/40 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -bottom-10 -left-10 w-36 h-36 bg-secondary-fixed/40 rounded-full blur-2xl pointer-events-none"></div>
+<div class="w-full flex items-center justify-between z-10 -mt-4 mb-space-xs">
+<div class="flex items-center gap-1.5 bg-surface-container-low px-3 py-1 rounded-full shadow-sm">
+<span class="text-sm">✨</span>
+<span class="font-label-md text-label-md text-primary font-bold">Nivel 4 Estudiante</span>
+</div>
+<div class="flex flex-col gap-1">
+<button aria-label="Música" class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors shadow-sm" data-action="camera" type="button">
+<span class="material-symbols-outlined text-[18px]">music_note</span>
+</button>
+<button aria-label="Configuración" class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors shadow-sm" data-action="settings" type="button">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+<div class="w-full flex items-center justify-center gap-4 z-10 my-1"><button class="flex flex-col items-center justify-center gap-1 bg-surface-container-low hover:bg-surface-container transition-all p-2.5 rounded-2xl shadow-sm min-w-[56px] group" data-action="food" type="button"><div class="w-11 h-11 rounded-full bg-primary-container/20 flex items-center justify-center text-primary group-hover:scale-105 transition-all"><span class="material-symbols-outlined text-[22px]">nutrition</span></div><span class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Comida</span></button><div class="relative w-40 h-40 rounded-full bg-surface-container-low flex items-center justify-center p-2 shadow-inner group"><div class="absolute inset-0 rounded-full bg-primary-container/15 animate-pulse"></div><img class="w-full h-full object-cover rounded-full z-10 shadow-sm" data-alt="Cute kawaii cream bunny rabbit in a cozy baby blue knitted sweater studying quietly at a wooden desk with glowing warm desk lamp, tiny potted succulent plant, and warm steaming tea, Japanese stationery aesthetic pastel colors peach and cream" id="bunny-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATF1q0kbDY6jYSAY8W3Gjkc0_QKWmY4-vqnw-8snNdw0GzBNBkruFcnfXwzHlZr26krgq9IqwW3ApcXrARYLQxh2zH9GWH9QXBZ7zyCgjnxzCDJu4h8_SJYRqtG3X35Uv0TRwp9K39gr2l28yENbn3Kx4jn-tAmvvThzrIxo1RcewzndE80p6fbMwJiH9hR-__ROFIxfPT23xfcw5JYUvnUV3vEqMzS0f6NjaxBXYhwfFlZPc2TNvR"/><div class="absolute -bottom-2 z-20 bg-surface-container-lowest px-3 py-1 rounded-full shadow-md flex items-center gap-1.5 border-none"><span class="w-2 h-2 rounded-full bg-primary animate-ping"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold" id="equipped-indicator">Suéter &amp; Lentes</span></div></div><button class="flex flex-col items-center justify-center gap-1 bg-primary-container/15 border border-primary-container/30 hover:bg-primary-container/25 transition-all p-2.5 rounded-2xl shadow-sm min-w-[56px] group" data-action="wardrobe" type="button"><div class="w-11 h-11 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-sm group-hover:scale-105 transition-all"><span class="material-symbols-outlined text-[22px]">checkroom</span></div><span class="font-label-sm text-label-sm text-primary font-bold">Armario</span></button></div>
+<div class="mt-4 text-center z-10">
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">"¡Hoy me siento con ganas de leer y beber té caliente!"</p>
+<div class="mx-auto mt-4 w-40 text-center" id="pomodoro-timer">
+  <div class="font-headline-lg text-[56px] leading-none font-bold text-primary-container" id="pomodoro-display">25:00</div>
+  <div class="mt-3 flex justify-center gap-2">
+    <button class="rounded-full bg-primary-container px-4 py-1.5 font-label-md text-label-md text-on-primary" id="pomodoro-start" type="button">Iniciar</button>
+    <button class="rounded-full bg-surface-container-high px-4 py-1.5 font-label-md text-label-md text-on-surface-variant" id="pomodoro-reset" type="button">Reiniciar</button>
+  </div>
+</div>
+</div>
+<div class="w-full mt-space-md pt-space-sm bg-surface-container-low/70 rounded-full px-4 py-2 flex items-center justify-between shadow-sm z-10">
+<div class="flex items-center gap-2">
+<span class="text-lg leading-none">🥕</span>
+<span class="font-label-md text-label-md text-primary font-bold" id="carrot-balance">450 Zanahorias</span>
+</div>
+<button class="flex items-center gap-1 font-label-sm text-label-sm text-primary-container hover:text-primary transition-colors" data-action="redeem" type="button">
+<span>Canjear horas</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+
+<script>
+  document.querySelector('header a > div.flex.flex-col > span.font-label-sm')?.remove();
+  document.getElementById('equipped-indicator').textContent = 'Biología';
+
+  const showMessage = (message) => {
+    let toast = document.getElementById('action-message');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'action-message';
+      toast.className = 'fixed left-1/2 bottom-24 z-[60] -translate-x-1/2 rounded-full bg-on-background px-4 py-2 text-sm text-white shadow-lg';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.hidden = false;
+    toast.classList.remove('hidden');
+    clearTimeout(toast.hideTimer);
+    toast.hideTimer = setTimeout(() => {
+      toast.hidden = true;
+      toast.classList.add('hidden');
+    }, 2200);
+  };
+
+  const pomodoroDisplay = document.getElementById('pomodoro-display');
+  const pomodoroStart = document.getElementById('pomodoro-start');
+  const pomodoroReset = document.getElementById('pomodoro-reset');
+  let pomodoroSeconds = 25 * 60;
+  let pomodoroInterval;
+
+  const updatePomodoroDisplay = () => {
+    const minutes = Math.floor(pomodoroSeconds / 60).toString().padStart(2, '0');
+    const seconds = (pomodoroSeconds % 60).toString().padStart(2, '0');
+    pomodoroDisplay.textContent = `${minutes}:${seconds}`;
+  };
+
+  pomodoroStart.addEventListener('click', () => {
+    if (pomodoroInterval) {
+      clearInterval(pomodoroInterval);
+      pomodoroInterval = undefined;
+      pomodoroStart.textContent = 'Iniciar';
+      return;
+    }
+
+    pomodoroStart.textContent = 'Pausar';
+    pomodoroInterval = setInterval(() => {
+      if (pomodoroSeconds <= 0) {
+        clearInterval(pomodoroInterval);
+        pomodoroInterval = undefined;
+        pomodoroStart.textContent = 'Iniciar';
+        showMessage('¡Pomodoro terminado! Tómate un descanso.');
+        return;
+      }
+      pomodoroSeconds -= 1;
+      updatePomodoroDisplay();
+    }, 1000);
+  });
+
+  pomodoroReset.addEventListener('click', () => {
+    clearInterval(pomodoroInterval);
+    pomodoroInterval = undefined;
+    pomodoroSeconds = 25 * 60;
+    pomodoroStart.textContent = 'Iniciar';
+    updatePomodoroDisplay();
+  });
+
+  document.querySelectorAll('.toggle-item-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const card = this.closest('.item-card');
+      const badge = card?.querySelector('.item-badge');
+      const isEquipped = this.dataset.state === 'equipped';
+      this.dataset.state = isEquipped ? 'unequipped' : 'equipped';
+      this.innerHTML = isEquipped
+        ? '<span>Poner</span>'
+        : '<span class="material-symbols-outlined text-[16px]">check</span><span>Equipado</span>';
+      this.classList.toggle('bg-surface-container', isEquipped);
+      this.classList.toggle('text-on-surface-variant', isEquipped);
+      this.classList.toggle('bg-primary-container', !isEquipped);
+      this.classList.toggle('text-on-primary', !isEquipped);
+      badge?.classList.toggle('hidden', isEquipped);
+
+      const equippedCount = document.querySelectorAll('.toggle-item-btn[data-state="equipped"]').length;
+      const count = document.getElementById('wardrobe-count');
+      if (count) count.textContent = `${equippedCount} / 6 Listos`;
+      const indicator = document.getElementById('equipped-indicator');
+      if (indicator) {
+        indicator.textContent = isEquipped ? `${this.dataset.name} quitado` : `${this.dataset.name} equipado`;
+        setTimeout(() => {
+          indicator.textContent = 'Biología';
+        }, 1800);
+      }
+      showMessage(isEquipped ? `${this.dataset.name} quitado.` : `${this.dataset.name} equipado.`);
+    });
+  });
+
+  document.querySelectorAll('.category-btn').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.category-btn').forEach(t => {
+        t.className = 'category-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md shadow-sm transition-all whitespace-nowrap flex items-center gap-1.5 hover:bg-surface-container';
+      });
+      this.className = 'category-btn active px-4 py-2 rounded-full bg-primary-container text-on-primary font-label-md text-label-md shadow-sm transition-all whitespace-nowrap flex items-center gap-1.5';
+      document.querySelectorAll('.item-card').forEach(card => {
+        card.classList.toggle('hidden', card.dataset.category !== this.dataset.category);
+      });
+    });
+  });
+
+  document.querySelectorAll('.buy-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const balance = document.getElementById('carrot-balance');
+      const current = Number.parseInt(balance?.textContent || '0', 10);
+      const price = Number.parseInt(this.textContent, 10);
+      if (current < price) {
+        showMessage('No tienes suficientes zanahorias.');
+        return;
+      }
+      if (balance) balance.textContent = `${current - price} Zanahorias`;
+      this.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span><span>Adquirido</span>';
+      this.disabled = true;
+      this.classList.add('opacity-60', 'cursor-not-allowed');
+      showMessage('¡Artículo adquirido!');
+    });
+  });
+
+  const saveBtn = document.getElementById('save-style-btn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function() {
+      this.innerHTML = '<span class="material-symbols-outlined text-[20px]">done_all</span><span>¡Bunny Luce Radiante! 🐰✨</span>';
+      setTimeout(() => {
+        this.innerHTML = '<span class="material-symbols-outlined text-[20px]">auto_fix_high</span><span>¡Guardar Estilo de Bunny!</span>';
+      }, 2200);
+    });
+  }
+</script>
+</main>
+{% endblock %}

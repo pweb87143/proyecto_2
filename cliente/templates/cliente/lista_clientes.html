@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="flex-1 w-full pt-16 pb-24 bg-surface">
+  <div class="mx-auto max-w-5xl px-margin space-y-space-md">
+    <section class="rounded-[30px] bg-gradient-to-br from-primary-fixed/60 via-surface-container-lowest to-secondary-fixed/50 p-space-lg shadow-[0_16px_40px_rgba(158,65,46,0.12)] border border-outline/10">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-[0.12em]">Armario</p>
+          <h1 class="mt-1 font-headline-lg text-headline-lg text-on-surface">Clientes</h1>
+        </div>
+        <a href="{% url 'cliente_crear' %}" class="inline-flex items-center gap-2 rounded-full bg-primary-container px-4 py-2 font-label-md text-label-md text-on-primary shadow-sm transition hover:opacity-95">
+          <span class="material-symbols-outlined text-[18px]">person_add</span>
+          <span>Nuevo</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="overflow-hidden rounded-[28px] bg-surface-container-lowest shadow-[0_10px_30px_rgba(158,65,46,0.08)] border border-outline/10">
+      <div class="px-space-md py-space-sm border-b border-outline/10 bg-surface-container-low/80">
+        <h2 class="font-headline-sm text-headline-sm text-on-surface">Registro reciente</h2>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[640px] border-collapse text-left">
+          <thead class="bg-surface-container-low text-on-surface-variant">
+            <tr>
+              <th class="px-space-md py-3 font-label-md text-label-md">ID</th>
+              <th class="px-space-md py-3 font-label-md text-label-md">Cliente</th>
+              <th class="px-space-md py-3 font-label-md text-label-md">Email</th>
+              <th class="px-space-md py-3 font-label-md text-label-md">Teléfono</th>
+              <th class="px-space-md py-3 font-label-md text-label-md">Estado</th>
+              <th class="px-space-md py-3 font-label-md text-label-md">Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cliente in clientes %}
+            <tr class="border-t border-outline/10 transition hover:bg-surface-container-low/70">
+              <td class="px-space-md py-4 font-label-sm text-label-sm text-on-surface-variant">#{{ cliente.id }}</td>
+              <td class="px-space-md py-4">
+                <div class="flex items-center gap-3">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary-container text-primary">
+                    <span class="material-symbols-outlined text-[18px]">person</span>
+                  </div>
+                  <div>
+                    <p class="font-label-md text-label-md text-on-surface">{{ cliente.nombre }}</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Cliente activo</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-space-md py-4 font-body-md text-body-md text-on-surface-variant">{{ cliente.email }}</td>
+              <td class="px-space-md py-4 font-body-md text-body-md text-on-surface-variant">{{ cliente.telefono|default:'—' }}</td>
+              <td class="px-space-md py-4">
+                {% if cliente.activo %}
+                  <span class="inline-flex rounded-full bg-primary-container px-2.5 py-1 font-label-sm text-label-sm text-on-primary">Activo</span>
+                {% else %}
+                  <span class="inline-flex rounded-full bg-surface-container-high px-2.5 py-1 font-label-sm text-label-sm text-on-surface-variant">Inactivo</span>
+                {% endif %}
+              </td>
+              <td class="px-space-md py-4 font-body-sm text-body-sm text-on-surface-variant whitespace-nowrap">{{ cliente.fecha_registro|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="px-space-md py-12 text-center font-body-md text-body-md text-on-surface-variant">
+                No se encontraron clientes registrados.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,510 @@
+<!-- #region Document Head & Configuration -->
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.googleapis.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Quicksand:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'error': '#b8684b', 'secondary-container': '#f4d9c7', 'error-container': '#f9dfd5',
+          'tertiary-fixed': '#f8e4d2', 'on-primary': '#fffaf6', 'inverse-primary': '#d9a07a',
+          'surface-container-high': '#efe3da', 'surface-container-lowest': '#fffdfb',
+          'tertiary-fixed-dim': '#e9c6a6', 'on-error': '#ffffff', 'on-tertiary-fixed': '#412c1c',
+          'on-error-container': '#7a3b22', 'surface-bright': '#fffaf5', 'outline': '#b89174',
+          'surface-container-low': '#f9f1eb', 'on-secondary-container': '#5d3d2d', 'tertiary': '#9b6d4f',
+          'secondary-fixed': '#f6dfd0', 'on-background': '#1f1c1a', 'outline-variant': '#e0c9b7',
+          'on-secondary': '#ffffff', 'on-primary-container': '#4d2d1e', 'secondary-fixed-dim': '#e8bc97',
+          'primary-fixed-dim': '#e9b38d', 'background': '#fffaf5', 'on-primary-fixed-variant': '#633c2a',
+          'primary-container': '#f2c7a5', 'surface': '#fffaf5', 'on-secondary-fixed': '#3d1d12',
+          'surface-container': '#f5eee8', 'tertiary-container': '#ecd2b5', 'on-surface': '#211c1a',
+          'inverse-surface': '#36302d', 'on-tertiary': '#ffffff', 'primary': '#c38a67',
+          'on-surface-variant': '#68564d', 'on-primary-fixed': '#341d12', 'on-secondary-fixed-variant': '#6d3d2c',
+          'secondary': '#d09b79', 'on-tertiary-fixed-variant': '#5d4030', 'on-tertiary-container': '#4d3122',
+          'primary-fixed': '#f7dec7', 'surface-container-highest': '#e8ddd5', 'inverse-on-surface': '#f6f0ec',
+          'surface-variant': '#efe3db', 'surface-dim': '#e2d5cd', 'surface-tint': '#c38a67'
+        },
+        borderRadius: { 'DEFAULT': '1rem', 'lg': '2rem', 'xl': '3rem', 'full': '9999px' },
+        spacing: { 'space-md': '1rem', 'space-sm': '0.5rem', 'margin': '1.25rem', 'space-xs': '0.25rem', 'space-lg': '1.5rem', 'gutter-lg': '1.5rem', 'margin-lg': '3rem', 'gutter': '1rem', 'margin-md': '2rem', 'space-xl': '2.25rem' },
+        fontFamily: { 'headline-sm': ['Quicksand'], 'body-sm': ['Inter'], 'body-md': ['Inter'], 'label-sm': ['Quicksand'], 'headline-md': ['Quicksand'], 'display-lg-mobile': ['Quicksand'], 'label-md': ['Quicksand'], 'label-lg': ['Quicksand'], 'display-lg': ['Quicksand'], 'headline-lg': ['Quicksand'], 'body-lg': ['Inter'] },
+        fontSize: { 'headline-sm': ['18px', { lineHeight: '26px', fontWeight: '600' }], 'body-sm': ['12px', { lineHeight: '18px', fontWeight: '400' }], 'body-md': ['14px', { lineHeight: '22px', fontWeight: '400' }], 'label-sm': ['11px', { lineHeight: '16px', letterSpacing: '0.5px', fontWeight: '700' }], 'headline-md': ['22px', { lineHeight: '30px', fontWeight: '600' }], 'display-lg-mobile': ['32px', { lineHeight: '40px', fontWeight: '700' }], 'label-md': ['13px', { lineHeight: '18px', fontWeight: '600' }], 'label-lg': ['15px', { lineHeight: '20px', fontWeight: '600' }], 'display-lg': ['40px', { lineHeight: '48px', fontWeight: '700' }], 'headline-lg': ['28px', { lineHeight: '36px', fontWeight: '700' }], 'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }] }
+      }
+    }
+  };
+</script>
+<style>
+  @layer base {
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    body {
+      overscroll-behavior: none;
+      min-height: 100dvh;
+    }
+
+    .pb-safe {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .pt-safe {
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    main > :first-child {
+      margin-top: 0 !important;
+    }
+
+    main > :last-child {
+      margin-bottom: 0 !important;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+</head>
+<!-- #endregion -->
+
+<!-- #region Body Start & Header Navigation -->
+<body class="bg-surface font-body-md text-body-md text-on-surface min-h-screen flex flex-col"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl shadow-[0_2px_12px_rgba(249,135,111,0.06)] pt-safe"><div class="h-16 px-margin flex items-center justify-between"><a class="flex items-center gap-space-sm" href="{% url 'index_cliente' %}"><div class="w-10 h-10 rounded-full bg-primary-container/20 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[22px]">spa</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary leading-none">CozyFocus</span><span class="font-label-sm text-label-sm text-on-surface-variant font-medium mt-0.5">Armario</span></div></a><div class="flex items-center gap-space-sm"><div class="flex items-center gap-1 bg-surface-container-low px-3 py-1.5 rounded-full shadow-[0_1px_4px_rgba(249,135,111,0.08)]"><span class="text-[14px]">🔥</span><span class="font-label-md text-label-md text-primary font-bold">5</span></div><button aria-label="Abrir perfil" class="w-8 h-8 rounded-full bg-primary flex items-center justify-center" data-action="profile" type="button"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></button></div></div></header>
+<!-- #endregion -->
+
+<!-- #region Main Content -->
+{% block content %}
+<main class="flex-1 flex flex-col relative w-full pt-16 pb-24 bg-surface"><div class="flex flex-col w-full px-margin pb-8 space-y-space-md">
+
+<!-- #region Bunny Companion Showcase Header Card -->
+<div class="relative bg-surface-container-lowest rounded-lg p-space-md shadow-sm flex flex-col items-center overflow-hidden">
+<!-- Cozy ambient peach background swirl -->
+<div class="absolute -top-12 -right-12 w-40 h-40 bg-primary-fixed/40 rounded-full blur-2xl pointer-events-none"></div>
+<div class="absolute -bottom-10 -left-10 w-36 h-36 bg-secondary-fixed/40 rounded-full blur-2xl pointer-events-none"></div>
+<!-- Top Badge row -->
+<div class="w-full flex items-center justify-between z-10 -mt-2 mb-space-xs">
+<div class="flex items-center gap-1.5 bg-surface-container-low px-3 py-1 rounded-full shadow-sm">
+<span class="text-sm">✨</span>
+<span class="font-label-md text-label-md text-primary font-bold">Nivel 4 Estudiante</span>
+</div>
+<div class="flex flex-col gap-1">
+<button aria-label="Música" class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors shadow-sm" data-action="camera" type="button">
+<span class="material-symbols-outlined text-[18px]">music_note</span>
+</button>
+<button aria-label="Configuración" class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors shadow-sm" data-action="settings" type="button">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+<!-- Interactive Bunny Avatar Window -->
+<div class="w-full flex items-center justify-center gap-4 z-10 my-1"><button class="flex flex-col items-center justify-center gap-1 bg-surface-container-low hover:bg-surface-container transition-all p-2.5 rounded-2xl shadow-sm min-w-[56px] group" data-action="food" type="button"><div class="w-11 h-11 rounded-full bg-primary-container/20 flex items-center justify-center text-primary group-hover:scale-105 transition-all"><span class="material-symbols-outlined text-[22px]">nutrition</span></div><span class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Comida</span></button><div class="relative w-40 h-40 rounded-full bg-surface-container-low flex items-center justify-center p-2 shadow-inner group"><div class="absolute inset-0 rounded-full bg-primary-container/15 animate-pulse"></div><img class="w-full h-full object-cover rounded-full z-10 shadow-sm" data-alt="Cute kawaii cream bunny rabbit in a cozy baby blue knitted sweater studying quietly at a wooden desk with glowing warm desk lamp, tiny potted succulent plant, and warm steaming tea, Japanese stationery aesthetic pastel colors peach and cream" id="bunny-avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATF1q0kbDY6jYSAY8W3Gjkc0_QKWmY4-vqnw-8snNdw0GzBNBkruFcnfXwzHlZr26krgq9IqwW3ApcXrARYLQxh2zH9GWH9QXBZ7zyCgjnxzCDJu4h8_SJYRqtG3X35Uv0TRwp9K39gr2l28yENbn3Kx4jn-tAmvvThzrIxo1RcewzndE80p6fbMwJiH9hR-__ROFIxfPT23xfcw5JYUvnUV3vEqMzS0f6NjaxBXYhwfFlZPc2TNvR"/><div class="absolute -bottom-2 z-20 bg-surface-container-lowest px-3 py-1 rounded-full shadow-md flex items-center gap-1.5 border-none"><span class="w-2 h-2 rounded-full bg-primary animate-ping"></span><span class="font-label-sm text-label-sm text-on-surface font-semibold" id="equipped-indicator">Suéter &amp; Lentes</span></div></div><button class="flex flex-col items-center justify-center gap-1 bg-primary-container/15 border border-primary-container/30 hover:bg-primary-container/25 transition-all p-2.5 rounded-2xl shadow-sm min-w-[56px] group" data-action="wardrobe" type="button"><div class="w-11 h-11 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-sm group-hover:scale-105 transition-all"><span class="material-symbols-outlined text-[22px]">checkroom</span></div><span class="font-label-sm text-label-sm text-primary font-bold">Armario</span></button></div>
+<!-- Bunny Name & Mood -->
+<div class="mt-4 text-center z-10">
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">"¡Hoy me siento con ganas de leer y beber té caliente!"</p>
+<div class="mx-auto mt-4 w-40 text-center" id="pomodoro-timer">
+  <div class="font-headline-lg text-[56px] leading-none font-bold text-primary-container" id="pomodoro-display">25:00</div>
+  <div class="mt-3 flex justify-center gap-2">
+    <button class="rounded-full bg-primary-container px-4 py-1.5 font-label-md text-label-md text-on-primary" id="pomodoro-start" type="button">Iniciar</button>
+    <button class="rounded-full bg-surface-container-high px-4 py-1.5 font-label-md text-label-md text-on-surface-variant" id="pomodoro-reset" type="button">Reiniciar</button>
+  </div>
+</div>
+</div>
+<!-- Carrot Wallet Bar -->
+<div class="w-full mt-space-md pt-space-sm bg-surface-container-low/70 rounded-full px-4 py-2 flex items-center justify-between shadow-sm z-10">
+<div class="flex items-center gap-2">
+<span class="text-lg leading-none">🥕</span>
+<span class="font-label-md text-label-md text-primary font-bold" id="carrot-balance">450 Zanahorias</span>
+</div>
+<button class="flex items-center gap-1 font-label-sm text-label-sm text-primary-container hover:text-primary transition-colors" data-action="redeem" type="button">
+<span>Canjear horas</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- #endregion -->
+
+<!-- #region Category Filter Pills -->
+<div class="flex items-center gap-2 overflow-x-auto py-1 no-scrollbar -mx-margin px-margin">
+<button class="category-btn active px-4 py-2 rounded-full bg-primary-container text-on-primary font-label-md text-label-md shadow-sm transition-all whitespace-nowrap flex items-center gap-1.5" data-category="ropa" type="button">
+<span class="material-symbols-outlined text-[16px]">checkroom</span>
+<span>Ropa</span>
+</button>
+<button class="category-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md shadow-sm transition-all whitespace-nowrap flex items-center gap-1.5 hover:bg-surface-container" data-category="sombreros" type="button">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+<span>Sombreros</span>
+</button>
+<button class="category-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md shadow-sm transition-all whitespace-nowrap flex items-center gap-1.5 hover:bg-surface-container" data-category="lentes" type="button">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+<span>Lentes</span>
+</button>
+<button class="category-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md shadow-sm transition-all whitespace-nowrap flex items-center gap-1.5 hover:bg-surface-container" data-category="escritorio" type="button">
+<span class="material-symbols-outlined text-[16px]">local_cafe</span>
+<span>Escritorio</span>
+</button>
+</div>
+<!-- #endregion -->
+
+<!-- #region Items Grid -->
+<div class="flex items-center justify-between pt-1">
+<span class="font-headline-sm text-headline-sm text-on-surface">Artículos del Armario</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-high px-2.5 py-0.5 rounded-full" id="wardrobe-count">4 / 6 Listos</span>
+</div>
+<div class="grid grid-cols-2 gap-3" id="items-container">
+<!-- Card 1: Suéter de Invierno (Equipped) -->
+<div class="item-card bg-surface-container-lowest rounded-lg p-3 shadow-sm flex flex-col justify-between relative transition-all duration-200" data-category="ropa">
+<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container-low flex items-center justify-center overflow-hidden mb-2">
+<img class="w-full h-full object-cover" data-alt="Chunky pastel blue cable knit woolen sweater folded neatly on a wooden shelf, soft cozy aesthetic, warm pastel lighting, cute clean stationery feel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWKIlMCvIZKcUdiIuFyFmUMeWSf9Acf03N5hmpWAcvHM_F0_vhiZHhgYn81_qSACr0eurzXrGqlYLEH6VSthjq58v3uLyvDThKXvtx4AMz21s8JLq6hud7pIfVTGIh9U09SiRu7Em56C-768hm6Z1yb8E7VoEDA6xn8au5plRQNQWWxd4xRbLBSUlFIR4oO3AKSqJohjxeDg40l69Sl7aFe8IePTUUkKC7emf4nF0OawOE6zJFJuwV"/>
+<span class="item-badge absolute top-2 left-2 bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded-full shadow-sm">
+          Puesto
+        </span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface leading-tight truncate">Suéter Celeste</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">Tejido calientito</span>
+</div>
+<button class="toggle-item-btn mt-3 w-full py-1.5 rounded-full bg-surface-container font-label-md text-label-md text-on-surface-variant flex items-center justify-center gap-1 transition-all" data-name="Suéter Celeste" data-state="equipped" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Equipado</span>
+</button>
+</div>
+<!-- Card 2: Lentes de Estudio Redondos (Equipped) -->
+<div class="item-card bg-surface-container-lowest rounded-lg p-3 shadow-sm flex flex-col justify-between relative transition-all duration-200" data-category="lentes">
+<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container-low flex items-center justify-center overflow-hidden mb-2">
+<img class="w-full h-full object-cover" data-alt="Round gold wireframe study spectacles glasses lying gently on an open cozy vintage diary notebook with clean pastel peach tones and warm highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVOwMU4MuE-cqfcJE-fUQYyhKu7WpQOxvEfyGwFSgh6x4YVECyveo8Qzs2aFZNnjz69F5NjdbZNxDleQ_hmIsLkuykMdA7OiTUjshJk-7FMIJaLMa7aCN5qLsFs_cIR_4lz5w0YAkOClwY6zDkMGu7TbRHy0H4IcO7nBlnVPdAQ1QdhmLhrk-0a3Yc3UU_lCDQu_x3D2KE3inm8rwWYgVTRjxFMkWUSw50R5gukWnL2YtQvZo53DN5"/>
+<span class="item-badge absolute top-2 left-2 bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded-full shadow-sm">
+          Puesto
+        </span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface leading-tight truncate">Lentes Redondos</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">+10 de Intelecto</span>
+</div>
+<button class="toggle-item-btn mt-3 w-full py-1.5 rounded-full bg-surface-container font-label-md text-label-md text-on-surface-variant flex items-center justify-center gap-1 transition-all" data-name="Lentes Redondos" data-state="equipped" type="button">
+<span class="material-symbols-outlined text-[16px]">check</span>
+<span>Equipado</span>
+</button>
+</div>
+<!-- Card 3: Boina Francesa Roja (Unlocked) -->
+<div class="item-card bg-surface-container-lowest rounded-lg p-3 shadow-sm flex flex-col justify-between relative transition-all duration-200" data-category="sombreros">
+<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container-low flex items-center justify-center overflow-hidden mb-2">
+<img class="w-full h-full object-cover" data-alt="Chic soft coral red wool french beret with a tiny leaf pin, displayed on a clean wooden stand, cute minimal bakery aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVYp9BHnkxbkqG8UZuOntIh7uIVLf753k2nBKegd0v4oqJf0HeBBk5ENbOfzkDQlXizWK1QwrCCtZ_EeCRmEVcSFQW6RX38BR_K8uShK8QxTilmoU0mK6eRd7gHv-nDyLZ6NqFeCKF1DbMHhmHxyqfCXlKkDmTxIRXUWBoodHAs5Ffa0LTavef2ukWVEV0JZW4KJJGSKIgGiP4CyVe5RHr_86tqgt9mAXjVDpnY5GYXi6pU4D4lH-6"/>
+<span class="item-badge hidden absolute top-2 left-2 bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded-full shadow-sm">Puesto</span>
+<span class="absolute top-2 right-2 bg-surface-container-lowest text-primary p-1 rounded-full shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">favorite</span>
+</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface leading-tight truncate">Boina de Café</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">Estilo intelectual</span>
+</div>
+<button class="toggle-item-btn mt-3 w-full py-1.5 rounded-full bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:opacity-95 transition-all flex items-center justify-center gap-1" data-name="Boina de Café" data-state="unequipped" type="button">
+<span>Poner</span>
+</button>
+</div>
+<!-- Card 4: Taza Humeante de Matcha (Unlocked) -->
+<div class="item-card bg-surface-container-lowest rounded-lg p-3 shadow-sm flex flex-col justify-between relative transition-all duration-200" data-category="escritorio">
+<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container-low flex items-center justify-center overflow-hidden mb-2">
+<img class="w-full h-full object-cover" data-alt="Chubby ceramic ceramic coffee mug with foaming green matcha latte art in bunny shape, emitting gentle vapor wisps on light wooden coaster, pastel tone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBz1kwE-TGHKanNkghYad9yf-9GJLu1oxYGep-Ag7qNC0xzXnfhZJLycxXyS4h2q7vcvBpSdvsiGnogkYLPkQhemd7XyR3hWEs1BwujA6kBibKa7L_tddZii5xuxkCM1vPAD9mjF4MfBb-pwq92FMvzpR4q-IxrvCFg4vYcZKbBSxBKdRDQiqZ5PpoP6-WYK2pEWsIV8X7R0ipP3zdtjxE6WyQrC0TqNb7ZAeWOpd63Kkyli68tCbrp"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface leading-tight truncate">Taza de Matcha</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">Calma profunda</span>
+</div>
+<span class="item-badge hidden absolute top-2 left-2 bg-primary text-on-primary font-label-sm text-label-sm px-2 py-0.5 rounded-full shadow-sm">Puesto</span>
+<button class="toggle-item-btn mt-3 w-full py-1.5 rounded-full bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:opacity-95 transition-all flex items-center justify-center gap-1" data-name="Taza de Matcha" data-state="unequipped" type="button">
+<span>Colocar</span>
+</button>
+</div>
+<!-- Card 5: Capa de Pastelillo (Locked - Milestone) -->
+<div class="item-card bg-surface-container-low/60 rounded-lg p-3 shadow-sm flex flex-col justify-between relative opacity-85" data-category="ropa">
+<div class="relative w-full aspect-square rounded-DEFAULT bg-surface flex items-center justify-center overflow-hidden mb-2">
+<img class="w-full h-full object-cover filter grayscale contrast-75 opacity-70" data-alt="Sweet pastel strawberry pink capelet with cream frosting collar and strawberry button, soft cute aesthetic on neutral stand" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv8aXdWhMQb2udQRfulHbbgO8bBahIB1XD8-30BBR5GymOARMb1lNL3Ol7unCCdFQQd7osK-q0C_0IwyekpIsi8weRaBKf0s91wZ7K6jFa6RAYV8iRzfRBKj67S1Yy9X49iySpnYyIFPLwhKfD9X7vF81VIEkn_OYhyrHRT_b2HdcAVlg7eGndsI471w-ezVjwAhoyN8ohv-fGOqrBQBBtkc8g-66zuTbdVq64x7gYMl_D0whi5pZt"/>
+<div class="absolute inset-0 bg-on-background/10 backdrop-blur-[1px] flex items-center justify-center">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest/90 flex items-center justify-center text-on-surface-variant shadow-sm">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface leading-tight truncate">Capa Pastelillo</span>
+<span class="font-body-sm text-body-sm text-secondary font-medium mt-0.5 flex items-center gap-1 truncate">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 50h estudio (32/50)
+        </span>
+</div>
+<div class="mt-3 w-full py-1.5 rounded-full bg-surface-container-high font-label-md text-label-md text-on-surface-variant text-center">
+        Bloqueado
+      </div>
+</div>
+<!-- Card 6: Orejeras Esponjosas (Locked - Carrot Shop) -->
+<div class="item-card bg-surface-container-lowest rounded-lg p-3 shadow-sm flex flex-col justify-between relative" data-category="escritorio">
+<div class="relative w-full aspect-square rounded-DEFAULT bg-surface-container-low flex items-center justify-center overflow-hidden mb-2">
+<img class="w-full h-full object-cover opacity-90" data-alt="Super fluffy plush marshmallow white ear warmers headphones with pastel peach band, soft dreamy clouds lighting, cute studio render" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2_bcLUsXcf1nur0hV_ymdgngIi4aWNdNC8xV2oLG5hN72Ktdgr9vZdITfQXzU-FyQ7C1L0N55qWHp_5ZCduw7p1Wz_jwHXwjFdur0F6rF5cE8vSwIZj283mNKWf-zde4jLPJ3KEehDbv5YmcUuF4uC_757BM9hFmgjE2UNd2HsyPfxM6DAuWIBjRgof-o_AGuHms4E9heF5oaMvUm9LTpV8M8XzXJJrciUmN5h5pj4jPWtB1PfLKi"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface leading-tight truncate">Orejeras Nube</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-0.5 truncate">Aislan el ruido</span>
+</div>
+<button class="buy-btn mt-3 w-full py-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-md text-label-md shadow-sm hover:bg-secondary-container transition-colors flex items-center justify-center gap-1.5" data-name="Orejeras Nube" type="button">
+<span>300</span>
+<span class="text-sm">🥕</span>
+</button>
+</div>
+</div>
+<!-- #endregion -->
+
+<!-- #region Daily Chest & Save Action -->
+<div class="bg-gradient-to-r from-secondary-fixed/50 to-primary-fixed/50 rounded-lg p-space-md shadow-sm flex items-center justify-between relative overflow-hidden mt-2">
+<div class="flex items-center gap-3 z-10">
+<div class="w-12 h-12 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary shadow-sm text-2xl">
+        🎁
+      </div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface leading-tight">Cofre de la Siesta</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Completa 1 sesión hoy para abrirlo</span>
+</div>
+</div>
+<button class="z-10 px-3 py-1.5 rounded-full bg-surface-container-lowest text-primary font-label-sm text-label-sm font-bold shadow-sm hover:bg-surface transition-colors" data-action="mission" type="button">
+      Ver Misión
+    </button>
+</div>
+<!-- Primary Floating Action: Guardar Look -->
+<div class="pt-2">
+<button class="w-full py-3.5 px-space-lg rounded-full bg-primary-container text-on-primary font-headline-sm text-headline-sm shadow-md hover:shadow-lg active:scale-[0.99] transition-all flex items-center justify-center gap-2" id="save-style-btn" type="button">
+<span class="material-symbols-outlined text-[20px]">auto_fix_high</span>
+<span>¡Guardar Estilo de Bunny!</span>
+</button>
+</div>
+</div>
+<!-- #endregion -->
+
+<!-- #region Script Interactions -->
+<script>
+  document.querySelector('header a > div.flex.flex-col > span.font-label-sm')?.remove();
+  document.querySelector('[data-action="wardrobe"]')?.remove();
+  document.querySelector('[data-action="food"]')?.remove();
+  document.getElementById('equipped-indicator').textContent = 'Biología';
+
+  const showMessage = (message) => {
+    let toast = document.getElementById('action-message');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'action-message';
+      toast.className = 'fixed left-1/2 bottom-24 z-[60] -translate-x-1/2 rounded-full bg-on-background px-4 py-2 text-sm text-white shadow-lg';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    clearTimeout(toast.hideTimer);
+    toast.hideTimer = setTimeout(() => toast.classList.add('hidden'), 2200);
+  };
+
+  const pomodoroDisplay = document.getElementById('pomodoro-display');
+  const pomodoroStart = document.getElementById('pomodoro-start');
+  const pomodoroReset = document.getElementById('pomodoro-reset');
+  let pomodoroSeconds = 25 * 60;
+  let pomodoroInterval;
+
+  const updatePomodoroDisplay = () => {
+    const minutes = Math.floor(pomodoroSeconds / 60).toString().padStart(2, '0');
+    const seconds = (pomodoroSeconds % 60).toString().padStart(2, '0');
+    pomodoroDisplay.textContent = `${minutes}:${seconds}`;
+  };
+
+  pomodoroStart.addEventListener('click', () => {
+    if (pomodoroInterval) {
+      clearInterval(pomodoroInterval);
+      pomodoroInterval = undefined;
+      pomodoroStart.textContent = 'Iniciar';
+      return;
+    }
+
+    pomodoroStart.textContent = 'Pausar';
+    pomodoroInterval = setInterval(() => {
+      if (pomodoroSeconds <= 0) {
+        clearInterval(pomodoroInterval);
+        pomodoroInterval = undefined;
+        pomodoroStart.textContent = 'Iniciar';
+        showMessage('¡Pomodoro terminado! Tómate un descanso.');
+        return;
+      }
+      pomodoroSeconds -= 1;
+      updatePomodoroDisplay();
+    }, 1000);
+  });
+
+  pomodoroReset.addEventListener('click', () => {
+    clearInterval(pomodoroInterval);
+    pomodoroInterval = undefined;
+    pomodoroSeconds = 25 * 60;
+    pomodoroStart.textContent = 'Iniciar';
+    updatePomodoroDisplay();
+  });
+
+  // Equip or unequip an item and update the companion indicator.
+  document.querySelectorAll('.toggle-item-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const card = this.closest('.item-card');
+      const badge = card?.querySelector('.item-badge');
+      const isEquipped = this.dataset.state === 'equipped';
+      this.dataset.state = isEquipped ? 'unequipped' : 'equipped';
+      this.innerHTML = isEquipped
+        ? '<span>Poner</span>'
+        : '<span class="material-symbols-outlined text-[16px]">check</span><span>Equipado</span>';
+      this.classList.toggle('bg-surface-container', isEquipped);
+      this.classList.toggle('text-on-surface-variant', isEquipped);
+      this.classList.toggle('bg-primary-container', !isEquipped);
+      this.classList.toggle('text-on-primary', !isEquipped);
+      badge?.classList.toggle('hidden', isEquipped);
+
+      const equippedCount = document.querySelectorAll('.toggle-item-btn[data-state="equipped"]').length;
+      const count = document.getElementById('wardrobe-count');
+      if (count) count.textContent = `${equippedCount} / 6 Listos`;
+      const indicator = document.getElementById('equipped-indicator');
+      if (indicator) {
+        indicator.textContent = isEquipped ? `${this.dataset.name} quitado` : `${this.dataset.name} equipado`;
+        setTimeout(() => {
+          indicator.textContent = 'Biología';
+        }, 1800);
+      }
+      showMessage(isEquipped ? `${this.dataset.name} quitado.` : `${this.dataset.name} equipado.`);
+    });
+  });
+
+  // Filter wardrobe cards by category.
+  document.querySelectorAll('.category-btn').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.category-btn').forEach(t => {
+        t.className = 'category-btn px-4 py-2 rounded-full bg-surface-container-lowest text-on-surface-variant font-label-md text-label-md shadow-sm transition-all whitespace-nowrap flex items-center gap-1.5 hover:bg-surface-container';
+      });
+      this.className = 'category-btn active px-4 py-2 rounded-full bg-primary-container text-on-primary font-label-md text-label-md shadow-sm transition-all whitespace-nowrap flex items-center gap-1.5';
+      document.querySelectorAll('.item-card').forEach(card => {
+        card.classList.toggle('hidden', card.dataset.category !== this.dataset.category);
+      });
+    });
+  });
+
+  document.querySelectorAll('.buy-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const balance = document.getElementById('carrot-balance');
+      const current = Number.parseInt(balance?.textContent || '0', 10);
+      const price = Number.parseInt(this.textContent, 10);
+      if (current < price) {
+        showMessage('No tienes suficientes zanahorias.');
+        return;
+      }
+      if (balance) balance.textContent = `${current - price} Zanahorias`;
+      this.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span><span>Adquirido</span>';
+      this.disabled = true;
+      this.classList.add('opacity-60', 'cursor-not-allowed');
+      showMessage('¡Artículo adquirido!');
+    });
+  });
+
+  document.querySelectorAll('[data-action]').forEach(button => {
+    button.addEventListener('click', () => {
+      const messages = {
+        camera: 'Puedes cambiar tu avatar desde el armario.',
+        food: 'Mochi recuperó energía con una zanahoria.',
+        wardrobe: 'Elige una categoría para cambiar el estilo.',
+        redeem: 'Completa sesiones de estudio para ganar zanahorias.',
+        mission: 'Misión: completa una sesión de estudio hoy.',
+        profile: 'Perfil de estudiante: nivel 4.',
+        settings: 'Configuración disponible desde el panel.'
+      };
+      showMessage(messages[button.dataset.action]);
+    });
+  });
+
+  // Save style celebration bounce
+  const saveBtn = document.getElementById('save-style-btn');
+  if (saveBtn) {
+    saveBtn.addEventListener('click', function() {
+      this.innerHTML = '<span class="material-symbols-outlined text-[20px]">done_all</span><span>¡Bunny Luce Radiante! 🐰✨</span>';
+      setTimeout(() => {
+        this.innerHTML = '<span class="material-symbols-outlined text-[20px]">auto_fix_high</span><span>¡Guardar Estilo de Bunny!</span>';
+      }, 2200);
+    });
+  }
+</script>
+<!-- #endregion -->
+
+</main>
+{% endblock %}
+<!-- #endregion -->
+
+<script>
+  (() => {
+    const destinations = {
+      camera: "{% url 'productos' %}#screen-armario",
+      wardrobe: "{% url 'productos' %}#screen-armario",
+      redeem: "{% url 'productos' %}#screen-home",
+      mission: "{% url 'productos' %}#screen-habitos",
+      settings: "{% url 'productos' %}#screen-settings"
+    };
+
+    function showActionMessage(message) {
+      let toast = document.getElementById('action-message');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'action-message';
+        toast.className = 'fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 rounded-full bg-on-background px-4 py-2 text-sm text-white shadow-lg';
+        toast.setAttribute('role', 'status');
+        document.body.appendChild(toast);
+      }
+      toast.textContent = message;
+      toast.hidden = false;
+      clearTimeout(toast.hideTimer);
+      toast.hideTimer = setTimeout(() => {
+        toast.hidden = true;
+      }, 2400);
+    }
+
+    document.querySelectorAll('button[data-action="camera"]').forEach(button => {
+      button.setAttribute('aria-label', 'Abrir armario');
+      const icon = button.querySelector('.material-symbols-outlined');
+      if (icon) icon.textContent = 'checkroom';
+    });
+
+    document.querySelectorAll('button[data-action]').forEach(button => {
+      button.addEventListener('click', () => {
+        const destination = destinations[button.dataset.action];
+        if (destination) {
+          window.location.assign(destination);
+          return;
+        }
+
+        if (button.dataset.action === 'food') {
+          const balance = document.getElementById('carrot-balance');
+          const amount = Number.parseInt(balance?.textContent || '0', 10);
+          if (!balance || amount < 1) {
+            showActionMessage('No tienes zanahorias disponibles.');
+            return;
+          }
+          balance.textContent = `${amount - 1} Zanahorias`;
+          showActionMessage('Mochi recuperó energía. Se usó 1 zanahoria.');
+          return;
+        }
+
+        if (button.dataset.action === 'profile') {
+          showActionMessage('Perfil de estudiante · Nivel 4 · Racha de 5 días');
+        }
+      });
+    });
+  })();
+</script>
+<!-- #region Bottom Navigation Bar & Closing -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-4px_16px_rgba(249,135,111,0.08)]"><div class="flex justify-around items-center h-20 px-space-xs"><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-1 text-on-surface-variant hover:text-primary transition-colors" data-path="home" href="{% url 'index_cliente' %}"><span class="material-symbols-outlined text-[24px]">home</span><span class="font-label-sm text-label-sm">Home</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-1 transition-colors text-on-surface-variant hover:text-primary" data-path="items" href="{% url 'productos' %}#screen-armario"><span class="material-symbols-outlined text-[24px]">inventory_2</span><span class="font-label-sm text-label-sm">Armario</span></a><a class="flex flex-col items-center justify-center min-w-[52px] min-h-[44px] gap-1 text-on-surface-variant hover:text-primary transition-colors" data-path="habits" href="{% url 'productos' %}#screen-habitos"><span class="material-symbols-outlined text-[24px]">checklist</span><span class="font-label-sm text-label-sm">Recordatorios</span></a></div></nav></body></html>
+<!-- #endregion -->

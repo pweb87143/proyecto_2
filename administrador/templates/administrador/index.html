@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="flex-1 w-full pt-16 pb-24 bg-surface">
+  <div class="mx-auto max-w-5xl px-margin space-y-space-md">
+    <section class="rounded-[30px] bg-gradient-to-br from-primary-fixed/60 via-surface-container-lowest to-secondary-fixed/50 p-space-lg shadow-[0_16px_40px_rgba(195,138,103,0.12)] border border-outline/10">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-[0.12em]">Panel</p>
+          <h1 class="mt-1 font-headline-lg text-headline-lg text-on-surface">Estadísticas</h1>
+        </div>
+        <div class="flex items-center gap-2 rounded-full bg-surface-container-low px-3 py-2 shadow-sm">
+          <span class="material-symbols-outlined text-[18px] text-primary">calendar_month</span>
+          <span class="font-label-md text-label-md text-on-surface-variant">Mes</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid gap-4 md:grid-cols-3">
+      <div class="rounded-[24px] bg-surface-container-lowest p-space-md shadow-[0_10px_28px_rgba(195,138,103,0.09)] border border-outline/10">
+        <div class="flex items-center justify-between">
+          <span class="font-label-md text-label-md text-on-surface-variant">Tiempo total</span>
+          <span class="material-symbols-outlined text-[20px] text-primary">timer</span>
+        </div>
+        <div class="mt-4 font-headline-lg text-headline-lg text-primary">12h 45m</div>
+        <p class="mt-1 font-body-sm text-body-sm text-on-surface-variant">Enfoque este mes</p>
+      </div>
+
+      <div class="rounded-[24px] bg-surface-container-lowest p-space-md shadow-[0_10px_28px_rgba(195,138,103,0.09)] border border-outline/10">
+        <div class="flex items-center justify-between">
+          <span class="font-label-md text-label-md text-on-surface-variant">Hábitos</span>
+          <span class="material-symbols-outlined text-[20px] text-primary">check_circle</span>
+        </div>
+        <div class="mt-4 font-headline-lg text-headline-lg text-secondary">85%</div>
+        <p class="mt-1 font-body-sm text-body-sm text-on-surface-variant">Completados</p>
+      </div>
+
+      <div class="rounded-[24px] bg-surface-container-lowest p-space-md shadow-[0_10px_28px_rgba(195,138,103,0.09)] border border-outline/10">
+        <div class="flex items-center justify-between">
+          <span class="font-label-md text-label-md text-on-surface-variant">Sesiones</span>
+          <span class="material-symbols-outlined text-[20px] text-primary">auto_awesome</span>
+        </div>
+        <div class="mt-4 font-headline-lg text-headline-lg text-tertiary">24</div>
+        <p class="mt-1 font-body-sm text-body-sm text-on-surface-variant">Realizadas</p>
+      </div>
+    </section>
+
+    <section class="rounded-[28px] bg-surface-container-lowest p-space-lg shadow-[0_10px_30px_rgba(195,138,103,0.09)] border border-outline/10">
+      <h2 class="font-headline-sm text-headline-sm text-on-surface">Esta semana</h2>
+      <div class="mt-6 flex h-40 items-end justify-between gap-2">
+        {% for dia in dias_semana %}
+        <div class="flex flex-1 flex-col items-center gap-2">
+          <div class="flex h-full w-full items-end overflow-hidden rounded-t-full bg-surface-container-high">
+            <div class="w-full rounded-t-full bg-primary-container" style="height: {{ forloop.counter|add:20 }}%;"></div>
+          </div>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">{{ dia }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="rounded-[28px] bg-surface-container-lowest p-space-lg shadow-[0_10px_30px_rgba(195,138,103,0.09)] border border-outline/10">
+      <h2 class="font-headline-sm text-headline-sm text-on-surface">Historial reciente</h2>
+      <ul class="mt-5 space-y-3">
+        {% for actividad in actividades %}
+        <li class="flex items-center justify-between rounded-2xl bg-surface-container-low px-4 py-3">
+          <div class="flex items-center gap-3">
+            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary-container text-on-primary">
+              <span class="material-symbols-outlined text-[20px]">book</span>
+            </div>
+            <div>
+              <p class="font-label-md text-label-md text-on-surface">{{ actividad.usuario }}</p>
+              <p class="font-body-sm text-body-sm text-on-surface-variant">{{ actividad.accion }}</p>
+            </div>
+          </div>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">{{ actividad.fecha|date:"d/m/Y" }}</span>
+        </li>
+        {% empty %}
+        <li class="rounded-2xl bg-surface-container-low px-4 py-6 text-center font-body-md text-body-md text-on-surface-variant">
+          No hay actividad registrada aún.
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
+</main>
+{% endblock %}
